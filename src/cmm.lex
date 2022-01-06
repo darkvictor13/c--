@@ -22,25 +22,46 @@ LETTER      [A-Za-z]
 ALPHA_NUM   ({DIGIT}|{LETTER})
 
 BLANK       [ \t\n]
+
+/* Classes de tokens */
+/*["if"|else|const|for|while|struct]*/
+KEYWORD     [if]
+DATA_TYPE   (int|long|short|float|double|char)
 END_EXP     ;
 ASSIGNMENT  =
 
-/* Classes de tokens */
-ID       ({LETTER})({LETTER}|{DIGIT}|_)*
-
 /* valores constantes para expressões */
-INTEGER_LITERAL  {DIGIT}+
-FLOAT_LITERAL    {INTEGER_LITERAL}"."{INTEGER_LITERAL}
-STRING_LITERAL   """.*"""
-CHAR_LITERAL     "'"."'"
+INTEGER_LITERAL {DIGIT}+
+FLOAT_LITERAL {INTEGER_LITERAL}"."{INTEGER_LITERAL}
+STRING_LITERAL \".*\"
+CHAR_LITERAL "'"."'"
 
-COMENT   "//".*"\n"
+/* aceita comentarios em uma ou mais linhas */
+COMENT ("//".*"\n"*|("/*"("*/"|(.|"\n")*)))
+
+ID ({LETTER})({LETTER}|{DIGIT}|_)*
 
 
 %% // separador para a segunda parte do arquivo
  /* Nessa parte define-se as ações a serem tomadas
     quando encontrar uma expressão regular definida acima
  */
+
+KEYWORD {
+    printf("palavra reservada %s\n", yytext);
+}
+
+DATA_TYPE {
+}
+
+{ASSIGNMENT} {
+	TokenType t = TOKEN_ASSIGNMENT;
+    printf("TODO\n");
+}
+
+{END_EXP} {
+    printf("TODO EXP\n");
+}
 
 {INTEGER_LITERAL} {
     printf("An integer: %s (%d)\n", yytext, atoi(yytext));
@@ -58,38 +79,12 @@ COMENT   "//".*"\n"
     printf("string lida = %s\n", yytext);
 }
 
-{ASSIGNMENT} {
-	TokenType t = TOKEN_ASSIGNMENT;
-    printf("TODO\n");
-}
-
-{END_EXP} {
-    printf("TODO EXP\n");
-}
-
 {COMENT} {
-    char buffer[yyleng-3];
-
-    int index_remover_inicio = 2;
-    while ( yytext[index_remover_inicio] == ' ' ||
-            yytext[index_remover_inicio] == '\t') {
-    
-        index_remover_inicio++;
-    }
-
-    const int buffer_len = yyleng - index_remover_inicio;
-
-    strncpy(buffer, yytext + index_remover_inicio, buffer_len);
-    buffer[buffer_len-1] = 0;
-    printf("Comentário = %s\n", buffer);
+    printf("Comentário = %s\n", yytext);
 }
 
 {ID} {
     printf("An identifier: %s\n", yytext);
-}
-
-"+"|"-"|"*"|"/" {
-    printf("An operator: %s\n", yytext);
 }
 
 {BLANK}+ /* Elimina espaços em branco e \n */

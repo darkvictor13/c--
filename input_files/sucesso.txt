@@ -1,2 +1,6 @@
-a = 10;
-10 + 55/7;
+// comentario
+/* ola
+mundo */
+int a = 10;
+if a;
+// ola
