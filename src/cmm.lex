@@ -24,9 +24,9 @@ ALPHA_NUM   ({DIGIT}|{LETTER})
 BLANK       [ \t\n]
 
 /* Classes de tokens */
-/*["if"|else|const|for|while|struct]*/
-KEYWORD     [if]
-DATA_TYPE   (int|long|short|float|double|char)
+
+KEYWORD     "if"|"else"|"const"|"for"|"while"|"struct"
+DATA_TYPE   "int"|"long"|"short"|"float"|"double"|"char"
 END_EXP     ;
 ASSIGNMENT  =
 
@@ -37,9 +37,13 @@ STRING_LITERAL \".*\"
 CHAR_LITERAL "'"."'"
 
 /* aceita comentarios em uma ou mais linhas */
-COMENT ("//".*"\n"*|("/*"("*/"|(.|"\n")*)))
+COMENT (("//".*"\n"*)|("/*"("*/"|(.|"\n")*)))
 
 ID ({LETTER})({LETTER}|{DIGIT}|_)*
+
+/* Erros a serem identificados */
+INVALID_STRING_LITERAL (\".*)
+INVALID_CHAR_LITERAL   (\'.*)
 
 
 %% // separador para a segunda parte do arquivo
@@ -47,15 +51,15 @@ ID ({LETTER})({LETTER}|{DIGIT}|_)*
     quando encontrar uma expressão regular definida acima
  */
 
-KEYWORD {
+{KEYWORD} {
     printf("palavra reservada %s\n", yytext);
 }
 
-DATA_TYPE {
+{DATA_TYPE} {
 }
 
 {ASSIGNMENT} {
-	TokenType t = TOKEN_ASSIGNMENT;
+    TokenType t = TOKEN_ASSIGNMENT;
     printf("TODO\n");
 }
 
@@ -89,6 +93,11 @@ DATA_TYPE {
 
 {BLANK}+ /* Elimina espaços em branco e \n */
 
+ /* Erros */
+{INVALID_STRING_LITERAL} {
+    printf("ERRO: aspas simples abertas mas não fechadas na linha [%d]", yylineno);
+}
+
 . { /* Qualquer caractere que nao foi definido antes */
     printf("ERRO: caractere inválido [%c] na linha [%d]\n",
             yytext[0], yylineno);
@@ -102,14 +111,14 @@ void exitFunction(void) {
 }
 
 int main(int argc,char** argv) {
-	assert(0 < argc && argc < 3);
+    assert(0 < argc && argc < 3);
     atexit(exitFunction);
 
     if (argc == 2) {
         yyin = fopen(argv[1], "r");
-	}else {
+    }else {
         yyin = stdin;
-	}
+    }
 
     yylex();
     return EXIT_SUCCESS;
