@@ -5,10 +5,14 @@
 #include <stdio.h>
 #include <stdlib.h> // exit, EXIT_FAILURE, atexit
 
+extern int yylineno;
+
+#define LOG_LEVEL LOG_TYPE_INFO
+
 typedef enum log_type {
-	LOG_TYPE_INFO,
 	LOG_TYPE_ERROR,
 	LOG_TYPE_WARNING,
+	LOG_TYPE_INFO
 }logType;
 
 // TODO always inline

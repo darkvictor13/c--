@@ -13,6 +13,7 @@
 #include <assert.h>
 
 #include "headers/token_definitions.h"
+#include "log_info/logging.h"
 void exitFunction(void);
 %}
 
@@ -25,8 +26,8 @@ BLANK       [ \t\n]
 
 /* Classes de tokens */
 
-KEYWORD     "if"|"else"|"const"|"for"|"while"|"struct"
-DATA_TYPE   "int"|"long"|"short"|"float"|"double"|"char"
+KEYWORD     "long"|"short"|"if"|"else"|"const"|"for"|"while"|"struct"
+DATA_TYPE   "int"|"float"|"double"|"char"
 END_EXP     ;
 ASSIGNMENT  =
 
@@ -36,8 +37,8 @@ FLOAT_LITERAL {INTEGER_LITERAL}"."{INTEGER_LITERAL}
 STRING_LITERAL \".*\"
 CHAR_LITERAL "'"."'"
 
-/* aceita comentarios em uma ou mais linhas */
-COMENT (("//".*"\n"*)|("/*"("*/"|(.|"\n")*)))
+/* aceita comentários em uma ou mais linhas */
+COMENT (("//".*)|("/*"("*/"|(.|"\n")*)))
 
 ID ({LETTER})({LETTER}|{DIGIT}|_)*
 
@@ -52,56 +53,108 @@ INVALID_CHAR_LITERAL   (\'.*)
  */
 
 {KEYWORD} {
-    printf("palavra reservada %s\n", yytext);
+    doLog (
+        LOG_TYPE_INFO,
+        "Palavra reservada [%s]",
+        yytext
+    );
 }
 
 {DATA_TYPE} {
+    doLog (
+        LOG_TYPE_INFO,
+        "Tipo de dado encontrado [%s]",
+        yytext
+    );
 }
 
 {ASSIGNMENT} {
-    TokenType t = TOKEN_ASSIGNMENT;
-    printf("TODO\n");
+    doLog (
+        LOG_TYPE_INFO,
+        "Caractere de atribuição [=] encontrado"
+    );
 }
 
 {END_EXP} {
-    printf("TODO EXP\n");
+    doLog (
+        LOG_TYPE_INFO,
+        "Caractere de fim de expressão [;] encontrado"
+    );
 }
 
 {INTEGER_LITERAL} {
-    printf("An integer: %s (%d)\n", yytext, atoi(yytext));
+    doLog (
+        LOG_TYPE_INFO,
+        "Valor inteiro [%s] encontrado",
+        yytext
+    );
 }
 
 {FLOAT_LITERAL} {
-    printf("A float: %s (%g)\n", yytext, atof(yytext));
+    doLog (
+        LOG_TYPE_INFO,
+        "Valor ponto flutuante [%s] encontrado",
+        yytext
+    );
 }
 
 {CHAR_LITERAL} {
-    printf("CHAR = %c\n", yytext[1]);
+    doLog (
+        LOG_TYPE_INFO,
+        "Caractere literal [%c] encontrado",
+        yytext[1]
+    );
 }
 
 {STRING_LITERAL} {
-    printf("string lida = %s\n", yytext);
+    doLog (
+        LOG_TYPE_INFO,
+        "String literal [%s] encontrado",
+        yytext
+    );
 }
 
 {COMENT} {
-    printf("Comentário = %s\n", yytext);
+    doLog (
+        LOG_TYPE_INFO,
+        "Cometário [%s] encontrado",
+        yytext
+    );
 }
 
 {ID} {
-    printf("An identifier: %s\n", yytext);
+    doLog (
+        LOG_TYPE_INFO,
+        "Identificador [%s] encontrado",
+        yytext
+    );
 }
 
 {BLANK}+ /* Elimina espaços em branco e \n */
 
  /* Erros */
 {INVALID_STRING_LITERAL} {
-    printf("ERRO: aspas simples abertas mas não fechadas na linha [%d]", yylineno);
+    doLog (
+        LOG_TYPE_ERROR,
+        "Aspas duplas abertas mas não fechadas string [%s] inválida",
+        yytext
+    );
+}
+
+{INVALID_CHAR_LITERAL} {
+    doLog (
+        LOG_TYPE_ERROR,
+        "Aspas simples abertas mas não fechadas string [%s] inválida",
+        yytext
+    );
 }
 
 . { /* Qualquer caractere que nao foi definido antes */
-    printf("ERRO: caractere inválido [%c] na linha [%d]\n",
-            yytext[0], yylineno);
-    exit(EXIT_FAILURE);
+    doLog (
+        LOG_TYPE_ERROR,
+        "Caractere inválido [%c]",
+        yytext[0]
+    );
 }
 
 %%

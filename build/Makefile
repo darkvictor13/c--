@@ -3,19 +3,20 @@ SRC=../src
 CC=gcc
 FLEX=flex
 
+LEX_FLAGS=-o $@
 CFLAGS=-O2
 LIBFLAGS=-lfl -lm
 
 LEX_SRC=$(SRC)/cmm.lex
 LEX_DEST=$(SRC)/main.c
 C_SRC=$(SRC)/*/*.c
-LEX_FLAGS=-o $@
 
 EXEC=main.out
 
 all: $(EXEC)
 
-$(EXEC): $(LEX_DEST)
+# recompila caso tenha mudancas nos headers no arquivo do lex ou nos src
+$(EXEC): $(LEX_DEST) $(C_SRC) $(SRC)/*/*.h
 	$(CC) $(CFLAGS) $(LEX_DEST) $(C_SRC) $(LIBFLAGS) -o $(EXEC)
 
 $(LEX_DEST): $(LEX_SRC)

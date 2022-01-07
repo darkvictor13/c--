@@ -1,6 +1,4 @@
 // comentario
-/* ola
-mundo */
 int a = 10;
 if a;
 // ola
