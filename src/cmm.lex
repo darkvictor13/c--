@@ -14,7 +14,9 @@
 
 #include "headers/token_definitions.h"
 #include "log_info/logging.h"
+
 void exitFunction(void);
+
 %}
 
 /* Definições*/
@@ -22,7 +24,8 @@ DIGIT       [0-9]
 LETTER      [A-Za-z]
 ALPHA_NUM   ({DIGIT}|{LETTER})
 
-BLANK       [ \t\n]
+BLANK       [ \t]
+BLANK_ENTER ({BLANK}|\n)
 
 /* Classes de tokens */
 
@@ -45,12 +48,20 @@ ID ({LETTER})({LETTER}|{DIGIT}|_)*
 /* Erros a serem identificados */
 INVALID_STRING_LITERAL (\".*)
 INVALID_CHAR_LITERAL   (\'.*)
-
+INVALID_NUMBER {DIGIT}+(.*){BLANK}
 
 %% // separador para a segunda parte do arquivo
  /* Nessa parte define-se as ações a serem tomadas
     quando encontrar uma expressão regular definida acima
  */
+
+{INVALID_NUMBER} {
+    doLog (
+        LOG_TYPE_ERROR,
+        "Número [%s] inválido",
+        yytext
+    );
+}
 
 {KEYWORD} {
     doLog (
@@ -152,7 +163,7 @@ INVALID_CHAR_LITERAL   (\'.*)
 . { /* Qualquer caractere que nao foi definido antes */
     doLog (
         LOG_TYPE_ERROR,
-        "Caractere inválido [%c]",
+        "Caractere [%c] não reconhecido pela linguagem,",
         yytext[0]
     );
 }
