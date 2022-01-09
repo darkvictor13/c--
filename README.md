@@ -30,7 +30,12 @@ Um reduzido analisador léxico de um subconjunto da linguagem C.
     └── main.c
 ```
 
-Onde cmm.lex é o arquivo de especificações da linguagem c--, main.c é o arquivo gerado pelo flex e main.out o resultado final da compilação.
+Onde:
+- input_files: Pasta contendo exemplos de arquivos que contém ou não erros léxicos;
+- src: Pasta contendo todos os códigos fonte do projeto, sendo escritos diretamente em C, ou gerados automaticamente pelo flex.
+- cmm.lex: Arquivo de especificações da linguagem c--, escrito em lex;
+- main.c: Arquivo gerado pelo flex;
+- main.out: Arquivo resultado final da compilação;
 
 ## Compilando e executando
 ### Compilando
