@@ -3,7 +3,7 @@ Um reduzido analisador léxico de um subconjunto da linguagem C.
 
 ## Integrantes:
     - Victor Emanuel Almeida;
-    - Marco Aurélio Guerra Pedroso.
+    - Marco A. Guerra Pedroso.
 
 ## A linguagem c--:
 
