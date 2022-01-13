@@ -9,50 +9,69 @@
 /* Código c colocado no escopo global do programa */
 %{
 #include <stdlib.h> // exit, EXIT_FAILURE, atexit
+#include <stdbool.h> // tipo bool
+#include <assert.h> // assert macro
 #include <math.h>
-#include <assert.h>
 
 #include "headers/token_definitions.h"
 #include "log_info/logging.h"
 
-void exitFunction(void);
+uint8_t is_open_block = 0;
+uint8_t is_open_expression = 0;
 
+void exitFunction(void);
 %}
 
 /* Definições*/
-DIGIT       [0-9]
-LETTER      [A-Za-z]
-ALPHA_NUM   ({DIGIT}|{LETTER})
+DIGIT [0-9]
+LETTER [A-Za-z]
+ALPHA_NUM ({DIGIT}|{LETTER})
 
-BLANK       [ \t]
-BLANK_ENTER ({BLANK}|\n)
+BLANK [ \t]
+ENTER [\n]
+BLANK_ENTER ({BLANK}|{ENTER})
+BLOCK_BEGIN "{"
+BLOCK_END "}"
+EXPRESSION_BEGIN "("
+EXPRESSION_END ")"
 
 /* Classes de tokens */
 
-KEYWORD     "long"|"short"|"if"|"else"|"const"|"for"|"while"|"struct"
-DATA_TYPE   "int"|"float"|"double"|"char"
-END_EXP     ;
-ASSIGNMENT  =
+PREPROCESSOR_COMAND "#"(.*)
+KEYWORD "if"|"else"|"const"|"for"|"while"|"struct"
+DATA_TYPE "int"|"float"|"double"|"char"
+ARITMETIC_OPERATOR "+""+"?|"-""-"?|"/"|"*"|"sizeof"|"["{INTEGER_LITERAL}"]"
+RELATIONAL_OPERATOR "&&"|"||"|"!"|("="|"!")"="|("<"|">")"="?
+END_EXP ;
+ASSIGNMENT "="|"+="|"-="|"*="|"/="|"%="|"<<="|">>="|"&="|"^="|"|="
 
 /* valores constantes para expressões */
 INTEGER_LITERAL {DIGIT}+
 FLOAT_LITERAL {INTEGER_LITERAL}"."{INTEGER_LITERAL}
 STRING_LITERAL \".*\"
-CHAR_LITERAL "'"."'"
+CHAR_LITERAL "'"(.|\\.)"'"
 
-/* aceita comentários em uma ou mais linhas */
-COMENT (("//".*)|("/*"("*/"|(.|"\n")*)))
+/* aceita comentários em uma linha */
+COMENT ("//".*)
 
 ID ({LETTER})({LETTER}|{DIGIT}|_)*
 
-/* Erros a serem identificados */
-INVALID_STRING_LITERAL (\".*)
-INVALID_CHAR_LITERAL   (\'.*)
+/* Erros a serem identificados (\".*) (\'.*)  */
+INVALID_STRING_LITERAL " "
+INVALID_CHAR_LITERAL  " "  
 
 %% // separador para a segunda parte do arquivo
  /* Nessa parte define-se as ações a serem tomadas
     quando encontrar uma expressão regular definida acima
  */
+
+{PREPROCESSOR_COMAND} {
+    doLog (
+        LOG_TYPE_INFO,
+        "Comando para o preprocessador [%s]",
+        yytext
+    );
+}
 
 {KEYWORD} {
     doLog (
@@ -73,7 +92,24 @@ INVALID_CHAR_LITERAL   (\'.*)
 {ASSIGNMENT} {
     doLog (
         LOG_TYPE_INFO,
-        "Caractere de atribuição [=] encontrado"
+        "Expressão de atribuição [%s] encontrada",
+        yytext
+    );
+}
+
+{ARITMETIC_OPERATOR} {
+    doLog (
+        LOG_TYPE_INFO,
+        "Operador aritmético [%s] encontrado",
+        yytext
+    );
+}
+
+{RELATIONAL_OPERATOR} {
+    doLog (
+        LOG_TYPE_INFO,
+        "Operador relacional [%s] encontrado",
+        yytext
     );
 }
 
@@ -82,6 +118,38 @@ INVALID_CHAR_LITERAL   (\'.*)
         LOG_TYPE_INFO,
         "Caractere de fim de expressão [;] encontrado"
     );
+}
+
+{BLOCK_BEGIN} {
+    doLog (
+        LOG_TYPE_INFO,
+        "Caractere de início de escopo [{] encontrado"
+    );
+    is_open_block++;
+}
+
+{BLOCK_END} {
+    doLog (
+        LOG_TYPE_INFO,
+        "Caractere de fim de escopo [}] encontrado"
+    );
+    is_open_block--;
+}
+
+{EXPRESSION_BEGIN} {
+    doLog (
+        LOG_TYPE_INFO,
+        "Caractere de início de expressão [(] encontrado"
+    );
+    is_open_expression++;
+}
+
+{EXPRESSION_END} {
+    doLog (
+        LOG_TYPE_INFO,
+        "Caractere de fim de expressão [)] encontrado"
+    );
+    is_open_expression--;
 }
 
 {INTEGER_LITERAL} {
@@ -103,8 +171,8 @@ INVALID_CHAR_LITERAL   (\'.*)
 {CHAR_LITERAL} {
     doLog (
         LOG_TYPE_INFO,
-        "Caractere literal [%c] encontrado",
-        yytext[1]
+        "Caractere literal [%s] encontrado",
+        yytext
     );
 }
 
@@ -132,7 +200,7 @@ INVALID_CHAR_LITERAL   (\'.*)
     );
 }
 
-{BLANK}+ /* Elimina espaços em branco e \n */
+{BLANK_ENTER}+ /* Elimina espaços em branco e \n */
 
  /* Erros */
 {INVALID_STRING_LITERAL} {
@@ -162,6 +230,12 @@ INVALID_CHAR_LITERAL   (\'.*)
 %%
 
 void exitFunction(void) {
+    if (is_open_block > 0) {
+        doLog(LOG_TYPE_ERROR, "Fim de arquivo antes de fechar o escopo {...");
+    }
+    if (is_open_expression > 0) {
+        doLog(LOG_TYPE_ERROR, "Fim de arquivo antes de fechar a expressão (...");
+    }
     printf("Programa encerrado\n");
 }
 
