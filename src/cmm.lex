@@ -18,9 +18,12 @@
 
 uint8_t is_open_block = 0;
 uint8_t is_open_expression = 0;
+char buffer[255];
+char *buffer_ptr;
 
 void exitFunction(void);
 %}
+%x comment string_literal char_literal
 
 /* Definições*/
 DIGIT [0-9]
@@ -48,22 +51,26 @@ ASSIGNMENT "="|"+="|"-="|"*="|"/="|"%="|"<<="|">>="|"&="|"^="|"|="
 /* valores constantes para expressões */
 INTEGER_LITERAL {DIGIT}+
 FLOAT_LITERAL {INTEGER_LITERAL}"."{INTEGER_LITERAL}
-STRING_LITERAL \".*\"
-CHAR_LITERAL "'"(.|\\.)"'"
+STRING_LITERAL_BEGIN \"
+CHAR_LITERAL_BEGIN \'
 
 /* aceita comentários em uma linha */
-COMENT ("//".*)
+COMENT ("//"|"/*")
 
 ID ({LETTER})({LETTER}|{DIGIT}|_)*
-
-/* Erros a serem identificados (\".*) (\'.*)  */
-INVALID_STRING_LITERAL " "
-INVALID_CHAR_LITERAL  " "  
 
 %% // separador para a segunda parte do arquivo
  /* Nessa parte define-se as ações a serem tomadas
     quando encontrar uma expressão regular definida acima
  */
+
+{COMENT} BEGIN(comment);
+<comment>[^*\n]*
+<comment>"*"+[^*/\n]*
+<comment>{BLANK_ENTER}+
+<comment>"*"+"/" BEGIN(INITIAL);
+
+{BLANK_ENTER}+ /* Elimina espaços em branco e \n */
 
 {PREPROCESSOR_COMAND} {
     doLog (
@@ -168,29 +175,27 @@ INVALID_CHAR_LITERAL  " "
     );
 }
 
-{CHAR_LITERAL} {
+{CHAR_LITERAL_BEGIN} BEGIN(char_literal);
+<char_literal>.\' {
     doLog (
         LOG_TYPE_INFO,
-        "Caractere literal [%s] encontrado",
-        yytext
+        "Caractere [%s] encontrado",
+        yytext[0]
     );
+    BEGIN(INITIAL);
+}
+<char_literal>\\.\' {
+    char temp[2];
+    strncpy(yytext, temp, 2);
+    doLog (
+        LOG_TYPE_INFO,
+        "Caractere [%s] encontrado",
+        temp
+    );
+    BEGIN(INITIAL);
 }
 
-{STRING_LITERAL} {
-    doLog (
-        LOG_TYPE_INFO,
-        "String literal [%s] encontrado",
-        yytext
-    );
-}
-
-{COMENT} {
-    doLog (
-        LOG_TYPE_INFO,
-        "Cometário [%s] encontrado",
-        yytext
-    );
-}
+{STRING_LITERAL_BEGIN} BEGIN(string_literal);
 
 {ID} {
     doLog (
@@ -200,25 +205,7 @@ INVALID_CHAR_LITERAL  " "
     );
 }
 
-{BLANK_ENTER}+ /* Elimina espaços em branco e \n */
-
  /* Erros */
-{INVALID_STRING_LITERAL} {
-    doLog (
-        LOG_TYPE_ERROR,
-        "Aspas duplas abertas mas não fechadas string [%s] inválida",
-        yytext
-    );
-}
-
-{INVALID_CHAR_LITERAL} {
-    doLog (
-        LOG_TYPE_ERROR,
-        "Aspas simples abertas mas não fechadas string [%s] inválida",
-        yytext
-    );
-}
-
 . { /* Qualquer caractere que nao foi definido antes */
     doLog (
         LOG_TYPE_ERROR,
