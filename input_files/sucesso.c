@@ -2,8 +2,8 @@
 
 int main () {
     // comentario
-    char *string = "ola mundo";
     char caractere = 'a';
+    char *string = "ola mundo";
     char enter = '\n';
     float pi = 3.14;
     int numero = 10;

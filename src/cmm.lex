@@ -55,7 +55,8 @@ STRING_LITERAL_BEGIN \"
 CHAR_LITERAL_BEGIN \'
 
 /* aceita comentários em uma linha */
-COMENT ("//"|"/*")
+COMENT_MULTILINE_BEGIN "/*"
+COMENT_SINGLE_LINE ("//".*)
 
 ID ({LETTER})({LETTER}|{DIGIT}|_)*
 
@@ -64,11 +65,13 @@ ID ({LETTER})({LETTER}|{DIGIT}|_)*
     quando encontrar uma expressão regular definida acima
  */
 
-{COMENT} BEGIN(comment);
-<comment>[^*\n]*
+{COMENT_MULTILINE_BEGIN} BEGIN(comment);
+<comment>[^("*"|"\")]*
 <comment>"*"+[^*/\n]*
-<comment>{BLANK_ENTER}+
+<comment>"\n"
 <comment>"*"+"/" BEGIN(INITIAL);
+
+{COMENT_SINGLE_LINE} /* elimina resto da linha do cometário */
 
 {BLANK_ENTER}+ /* Elimina espaços em branco e \n */
 
@@ -176,7 +179,7 @@ ID ({LETTER})({LETTER}|{DIGIT}|_)*
 }
 
 {CHAR_LITERAL_BEGIN} BEGIN(char_literal);
-<char_literal>.\' {
+<char_literal>."'" { /* ([:print:]|[:space:]) */
     doLog (
         LOG_TYPE_INFO,
         "Caractere [%s] encontrado",
@@ -191,6 +194,14 @@ ID ({LETTER})({LETTER}|{DIGIT}|_)*
         LOG_TYPE_INFO,
         "Caractere [%s] encontrado",
         temp
+    );
+    BEGIN(INITIAL);
+}
+<char_literal>.*{BLANK_ENTER} {
+    doLog (
+        LOG_TYPE_ERROR,
+        "Caractere literal [%s] aberto mas nao fechado",
+        yytext
     );
     BEGIN(INITIAL);
 }
