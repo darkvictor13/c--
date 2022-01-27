@@ -18,9 +18,9 @@
 #include "headers/token_definitions.h"
 #include "log_info/logging.h"
 #include "utils/user_input.h"
+#include "utils/utils.h"
 
 char buffer[255];
-char *buffer_ptr = &buffer;
 
 uint8_t is_open_block = 0;
 uint8_t is_open_expression = 0;
@@ -50,7 +50,7 @@ EXPRESSION_END ")"
 INTEGER_LITERAL {DIGIT}+
 FLOAT_LITERAL {INTEGER_LITERAL}"."{INTEGER_LITERAL}
 STRING_LITERAL_BEGIN \"
-CHAR_LITERAL_BEGIN \'
+CHAR_LITERAL \'\\?.
 
 PREPROCESSOR_COMAND "#"(.*)
 KEYWORD "if"|"else"|"const"|"for"|"while"|"struct"
@@ -199,22 +199,27 @@ ID ({LETTER})({LETTER}|{DIGIT}|_)*
     );
 }
 
-{CHAR_LITERAL_BEGIN} BEGIN(char_literal);
+{CHAR_LITERAL} {
+    _strncpy(buffer, yytext + 1, yyleng - 1);
+    BEGIN(char_literal);
+}
 <char_literal>\' {
     doLog (
         LOG_TYPE_INFO,
         "Caractere [%s] encontrado",
-        buffer[0]
+        buffer
     );
     BEGIN(INITIAL);
 }
-<char_literal>\\?. {
-    printf("copiando %s\n", yytext);
-    strncpy(buffer, yytext, yyleng);
-    buffer_ptr += yyleng;
-}
 
-<char_literal>.* {
+<char_literal>. {
+    doLog (
+        LOG_TYPE_ERROR,
+        "char literal mal formado [%s]",
+        buffer
+    );
+    BEGIN(INITIAL);
+    yyless(1); // devolve para o input o caractere lido
 }
 
 {STRING_LITERAL_BEGIN} BEGIN(string_literal);
@@ -233,11 +238,11 @@ ID ({LETTER})({LETTER}|{DIGIT}|_)*
         "String literal mal formada [%s]",
         buffer
     );
+    BEGIN(INITIAL);
 }
 
 <string_literal>[^\\\n\"]+ {
-    strncpy(buffer, yytext, yyleng);
-    buffer_ptr += yyleng;
+    _strncpy(buffer, yytext, yyleng);
 }
 
 {ID} {
@@ -266,7 +271,7 @@ void exitFunction(const char * filename) {
     if (is_open_expression > 0) {
         doLog(LOG_TYPE_ERROR, "Fim de arquivo antes de fechar a expressão (...");
     }
-    printf("[%s] ao executar a análise léxica no arquivo [%s]\nEncerrando o compilador\n",
+    printf("%s ao executar a análise léxica no arquivo [%s]\nEncerrando o compilador\n",
         have_error? "Falha" : "Sucesso",
         filename
     );

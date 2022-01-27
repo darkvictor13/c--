@@ -2,6 +2,7 @@
 
 int main () {
     // comentario
+    int te@ste;
     char *string = "ola mundo;
     char caractere = 'a;
     char enter = '\n;
