@@ -3,30 +3,26 @@
 
 #include <stdarg.h>
 #include <stdio.h>
-#include <stdlib.h> // exit, EXIT_FAILURE, atexit
+#include <stdlib.h>
+#include <stdbool.h>
+
+#include "../headers/user_config.h"
 
 extern int yylineno;
-
-#define LOG_LEVEL LOG_TYPE_INFO
-
-typedef enum log_type {
-	LOG_TYPE_ERROR,
-	LOG_TYPE_WARNING,
-	LOG_TYPE_INFO
-}logType;
+extern bool have_error;
 
 // TODO always inline
 const char * typeToMessage(logType type);
 
 /**
- * @brief 
+ * @brief Imprime no terminal a mensagem de log
  * 
- * @param is_error 
- * @param format 
- * @param ... 
+ * @param type tipo de Mensagem q foi passada, ver logType
+ * @param format string de formatação semelhante a recebida pelo printf
+ * @param ... n argumentos, interpretados pela string de formatação
  * @pre Nenhuma
- * @post Nenhuma
+ * @post Mensagem de Log impressa no terminal
  */
-void doLog(logType is_error, const char* format, ...);
+void doLog(logType type, const char* format, ...);
 
 #endif // LOGGING

@@ -56,3 +56,8 @@ Uma vez com make e flex instalado basta iniciar o processo de compilação entra
 Tendo gerado o executável "main.out" dentro da pasta build, basta executá-lo podendo passar um único argumento adicional sendo esse o caminho relativo para um arquivo texto o qual será tratado como o fonte a ser analisado, caso não tenha parâmetros o input deve vir da linha de comandos.
 
 	./main.out [caminho_para_fonte]
+
+# TODO
+[ ] Apresentação;
+[ ] Documentação;
+[ ] Fonte 1 e 2;
