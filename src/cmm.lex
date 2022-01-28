@@ -10,7 +10,7 @@
 
 /* Código c colocado no escopo global do programa */
 %{
-#include <stdlib.h> // exit, EXIT_FAILURE, atexit
+#include <stdlib.h> // exit, EXIT_FAILURE
 #include <stdbool.h> // tipo bool
 #include <assert.h> // assert macro
 #include <math.h>
@@ -29,15 +29,15 @@ bool have_error;
 
 void exitFunction(const char * filename);
 %}
-%x comment string_literal char_literal id
+%x comment string_literal char_literal
 
 /* ---------- */
 /* Definições */
 /* ---------- */
 
-/* Define quais caracteres representam digitos */
+/* Define quais caracteres representam dígitos */
 DIGIT [0-9]
-/* Define quais caracteres representam letras maiusculas ou minusculas */
+/* Define quais caracteres representam letras maiúsculas ou minusculas */
 LETTER [A-Za-z]
 /* Define uma regra que aceita qualquer Digito ou Letra */
 ALPHA_NUM ({DIGIT}|{LETTER})
@@ -78,8 +78,7 @@ CHAR_LITERAL \'\\?.
 COMMENT_MULTILINE_BEGIN "/*"
 COMMENT_SINGLE_LINE ("//".*)
 
-ID_BEGIN ({LETTER})
-
+ID ({LETTER})({ALPHA_NUM}|_)*
 
 %% /* separador para a segunda parte do arquivo */
  /*
@@ -262,18 +261,12 @@ ID_BEGIN ({LETTER})
     _strncpy(buffer, yytext, yyleng);
 }
 
-{ID_BEGIN} {
-    buffer[0] = yytext[0];
-    BEGIN(id);
+{ID} {
     doLog (
         LOG_TYPE_INFO,
         "Identificador [%s] encontrado",
         yytext
     );
-}
-
-<id>({LETTER}|{DIGIT}|_)* {
-
 }
 
  /* Qualquer caractere que não foi definido antes deve lançar um erro */
@@ -299,10 +292,11 @@ void exitFunction(const char * filename) {
         doLog(LOG_TYPE_ERROR, "Fim de arquivo antes de fechar a expressão (...");
     }
     printf (
-        "%s ao executar a análise léxica no arquivo [%s]\nEncerrando o compilador\n",
+        "\n%s ao executar a análise léxica no arquivo [%s]\n",
         have_error? "Falha" : "Sucesso",
         filename
     );
+	printf("Encerrando o compilador c--\n");
 }
 
 int main(int argc,char** argv) {
@@ -314,15 +308,13 @@ int main(int argc,char** argv) {
     }else {
         filename = getFilenameFromUser();
     }
-#if USE_TERMINAL
-    if (!strcmp(filename, "terminal")) {
-        yyin = stdin;
-    }else {
-        yyin = fopen(filename, "r");
-    }
-#else
-    yyin = fopen(filename, "r");
-#endif
+    FILE *file_ptr = fopen(filename, "r");
+	if (file_ptr == NULL) {
+		printf("Falha ao abrir o arquivo de entrada\n");
+		printf("Encerrando o compilador c--\n"); // colocar no atexit
+		return EXIT_FAILURE;
+	}
+	yyin = file_ptr;
 
     yylex();
     exitFunction(filename);

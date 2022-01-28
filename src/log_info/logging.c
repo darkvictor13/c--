@@ -16,11 +16,10 @@ void doLog(logType type, const char* format, ...) {
 	if (type == LOG_TYPE_ERROR){
 		have_error = true;
 	}
-	const char *type_message = typeToMessage(type);
     va_list args;
     va_start(args, format);
 
-    printf("[%s]: ", type_message);
+    printf("[%s]: ", typeToMessage(type));
     vprintf(format, args);
 	printf(" na linha [%d]\n", yylineno);
 
