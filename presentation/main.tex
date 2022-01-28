@@ -1,0 +1,153 @@
+\documentclass[12pt]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[portuguese]{babel}
+\usepackage{graphicx}
+\usepackage{colortbl}
+\usepackage{color}
+\usepackage{cite}
+\usepackage{breqn}
+\usepackage{listings}
+
+\graphicspath{{./images}}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+\definecolor{laranja_claro}{rgb}{1,0.9,0.5}
+\definecolor{laranja_escuro}{rgb}{1,0.5,0.2}
+\definecolor{azul_claro}{rgb}{0.5,0.9,1}
+
+\lstset{frame=tb,
+  language=C,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=4
+}
+
+\definecolor{azul}{rgb}{0,0,.5}
+\setbeamertemplate{navigation symbols}{}
+
+\usetheme{Frankfurt}
+\usecolortheme[named=azul]{structure}
+
+%% Definindo o Autor e o título
+\newcommand{\prof}{Newton Spolaôr}
+\newcommand{\materia}{Compiladores}
+
+\author[Grupo: c--]{Victor E. Almeida \and Marco A. G. Pedroso}
+
+\title{Analisador léxico para a linguagem C--}
+\subtitle{Demonstrando o software}
+\date{\today}
+\institute{UNIOESTE}
+
+\begin{document}
+\frame{\titlepage}
+
+\begin{frame}
+\frametitle{Conteúdo}
+\tableofcontents
+\end{frame}
+
+\section{Introdução}\label{Introdução}
+\begin{frame}
+    \frametitle{Softwares utilizados}
+    \begin{itemize}
+        \item \textbf{Sistema para compilar}: GNU make,
+        \item \textbf{Linguagem de programação}: ANSI C,
+        \item \textbf{Gerador de analisador léxico}: GNU flex.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[t,fragile]{\insertsectionhead}
+    \frametitle{Funcionamento do lex/flex}
+
+    \begin{lstlisting}
+    EXPRESSION_BEGIN "("
+    {EXPRESSION_BEGIN} {
+        doLog (
+            LOG_TYPE_INFO,
+            "inicio de expressao [(] encontrado"
+        );
+        is_open_expression++;
+    }
+    \end{lstlisting}
+\end{frame}
+
+\begin{frame}[t,fragile]{\insertsectionhead}
+    \frametitle{Exemplo minimo do flex}
+    \begin{lstlisting}
+        int num_lines = 0, num_chars = 0;
+
+        %%
+        \n      ++num_lines; ++num_chars;
+        .       ++num_chars;
+        %%
+
+        int main() {
+            yylex();
+            printf("lines = %d, chars = %d\n",
+                    num_lines, num_chars);
+            return 0;
+        }
+    \end{lstlisting}
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+    \frametitle{Lista de Tokens reconhecidos}
+    \begin{itemize}
+        \item comando para o preprocessador: ``\#''(.*)
+        \item palavras reservadas: ``if''$|$``else''$|$``const''$|$``for''$|$``while''$|$``struct''
+        \item tipos de dados: ``int''$|$``float''$|$``double''$|$``char''
+        %\item atribuição: "="|"+="|"-="|"*="|"/="|"\%="|"<<="|">>="|"&="|"^="|"|="
+        %\item operador aritimetico: "+""+"?|"-""-"?|"/"|"*"|"sizeof"|"["{INTEGER_LITERAL}"]"
+        %\item operador relacional: "&&"|"||"|"!"|("="|"!")"="|("<"|">")"="?
+        %\item fim de expressão: ;
+        %\item início de bloco: \{
+        %\item fim de bloco: \}
+        %\item abre parenteses: (
+        %\item fecha parenteses: )
+        %\item inteiro literal: {DIGIT}+
+        %\item float literal {INTEGER_LITERAL}"."{INTEGER_LITERAL}
+        %\item string literal: \"[^\\\n\"]+\"
+        %\item char literal: \'\\?.\'
+        %\item identificador: ({LETTER})({ALPHA_NUM}|_)*
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Mão na massa}
+    \includegraphics[width=\textwidth]{pizza.png}
+    \includegraphics[width=\textwidth]{rolo.png}
+    \includegraphics[width=\textwidth]{burrito.png}
+\end{frame}
+
+\section{Conclusão}
+\begin{frame}
+    \frametitle{Agradecimentos}
+    \centering
+    \Huge{Perguntas?}
+    \includegraphics[width=\textwidth]{alerta.png}
+    \includegraphics[width=\textwidth]{perigo.png}
+    \includegraphics[width=\textwidth]{eletricidade.png}
+    \Huge{Obrigado pela atenção}
+\end{frame}
+
+\section{Referências}\label{Referências}
+\begin{frame}[allowframebreaks]
+    \frametitle{Referências} 
+    \bibliography{ref}
+    \bibliographystyle{abbrv} % funciona
+\end{frame}
+
+\end{document}
