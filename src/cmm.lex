@@ -29,22 +29,44 @@ bool have_error;
 
 void exitFunction(const char * filename);
 %}
-%x comment string_literal char_literal
+%x comment string_literal char_literal id
 
-/* Definições*/
+/* ---------- */
+/* Definições */
+/* ---------- */
+
+/* Define quais caracteres representam digitos */
 DIGIT [0-9]
+/* Define quais caracteres representam letras maiusculas ou minusculas */
 LETTER [A-Za-z]
+/* Define uma regra que aceita qualquer Digito ou Letra */
 ALPHA_NUM ({DIGIT}|{LETTER})
 
+/* Definição dos caracteres que são considerados espaço em branco */
 BLANK [ \t]
+/* Definição do caractere que é considerados quebra de linha */
 ENTER [\n]
+/* Define uma regra que aceita qualquer um BLANK ou um ENTER */
 BLANK_ENTER ({BLANK}|{ENTER})
-BLOCK_BEGIN "{"
-BLOCK_END "}"
-EXPRESSION_BEGIN "("
-EXPRESSION_END ")"
 
+/* ----------------- */
 /* Classes de tokens */
+/* ----------------- */
+PREPROCESSOR_COMMAND "#"(.*)
+KEYWORD "if"|"else"|"const"|"for"|"while"|"struct"
+DATA_TYPE "int"|"float"|"double"|"char"
+ASSIGNMENT "="|"+="|"-="|"*="|"/="|"%="|"<<="|">>="|"&="|"^="|"|="
+ARITHMETIC_OPERATOR "+""+"?|"-""-"?|"/"|"*"|"sizeof"|"["{INTEGER_LITERAL}"]"
+RELATIONAL_OPERATOR "&&"|"||"|"!"|("="|"!")"="|("<"|">")"="?
+END_EXP ;
+/* Definição do caractere que é considerado inicio de um escopo */
+BLOCK_BEGIN "{"
+/* Definição do caractere que é considerado fim de um escopo */
+BLOCK_END "}"
+/* Definição do caractere que é considerado inicio de uma expressão */
+EXPRESSION_BEGIN "("
+/* Definição do caractere que é considerado fim de uma expressão */
+EXPRESSION_END ")"
 
 /* valores constantes para expressões */
 INTEGER_LITERAL {DIGIT}+
@@ -52,27 +74,21 @@ FLOAT_LITERAL {INTEGER_LITERAL}"."{INTEGER_LITERAL}
 STRING_LITERAL_BEGIN \"
 CHAR_LITERAL \'\\?.
 
-PREPROCESSOR_COMMAND "#"(.*)
-KEYWORD "if"|"else"|"const"|"for"|"while"|"struct"
-DATA_TYPE "int"|"float"|"double"|"char"
-ARITHMETIC_OPERATOR "+""+"?|"-""-"?|"/"|"*"|"sizeof"|"["{INTEGER_LITERAL}"]"
-RELATIONAL_OPERATOR "&&"|"||"|"!"|("="|"!")"="|("<"|">")"="?
-END_EXP ;
-ASSIGNMENT "="|"+="|"-="|"*="|"/="|"%="|"<<="|">>="|"&="|"^="|"|="
-
 /* aceita comentários em uma linha */
 COMMENT_MULTILINE_BEGIN "/*"
 COMMENT_SINGLE_LINE ("//".*)
 
-ID ({LETTER})({LETTER}|{DIGIT}|_)*
+ID_BEGIN ({LETTER})
+
 
 %% /* separador para a segunda parte do arquivo */
  /*
     Nessa parte define-se as ações a serem tomadas
-    quando encontrar uma expressão regular definida acima
+    quando encontrar uma das classes de tokens previamente
+    definidas
  */
 
-/* Elimina comentários de múltiplas linhas */
+ /* Elimina comentários de múltiplas linhas */
 {COMMENT_MULTILINE_BEGIN} BEGIN(comment);
 <comment>[^("*"|"\")]*
 <comment>"*"+[^*/\n]*
@@ -246,7 +262,9 @@ ID ({LETTER})({LETTER}|{DIGIT}|_)*
     _strncpy(buffer, yytext, yyleng);
 }
 
-{ID} {
+{ID_BEGIN} {
+    buffer[0] = yytext[0];
+    BEGIN(id);
     doLog (
         LOG_TYPE_INFO,
         "Identificador [%s] encontrado",
@@ -254,8 +272,12 @@ ID ({LETTER})({LETTER}|{DIGIT}|_)*
     );
 }
 
- /* Erros */
-. { /* Qualquer caractere que nao foi definido antes */
+<id>({LETTER}|{DIGIT}|_)* {
+
+}
+
+ /* Qualquer caractere que não foi definido antes deve lançar um erro */
+. {
     doLog (
         LOG_TYPE_ERROR,
         "Caractere [%c] não reconhecido pela linguagem,",
@@ -263,7 +285,11 @@ ID ({LETTER})({LETTER}|{DIGIT}|_)*
     );
 }
 
-%%
+%% /* separador para a terceira parte do arquivo */
+/*
+    Aqui temos mais definições C
+    para serem colocadas no final do arquivo main.c
+*/
 
 void exitFunction(const char * filename) {
     if (is_open_block) {
@@ -272,7 +298,8 @@ void exitFunction(const char * filename) {
     if (is_open_expression > 0) {
         doLog(LOG_TYPE_ERROR, "Fim de arquivo antes de fechar a expressão (...");
     }
-    printf("%s ao executar a análise léxica no arquivo [%s]\nEncerrando o compilador\n",
+    printf (
+        "%s ao executar a análise léxica no arquivo [%s]\nEncerrando o compilador\n",
         have_error? "Falha" : "Sucesso",
         filename
     );
