@@ -1,6 +1,5 @@
 #include "user_input.h"
 
-
 char * getFilenameFromUser() {
     char *buffer;
 #if USE_TERMINAL

@@ -1,6 +1,6 @@
-#line 2 "../src/main.c"
+#line 1 "../src/main.c"
 
-#line 4 "../src/main.c"
+#line 3 "../src/main.c"
 
 #define  YY_INT_ALIGNED short int
 
@@ -554,14 +554,15 @@ int yy_flex_debug = 0;
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
 #line 1 "../src/cmm.lex"
-#line 2 "../src/cmm.lex"
- /**
+/**
     Arquivo de configuração para a linguagem c--
+    
     Documentação utilizada para gerar arquivo:
         - https://ftp.gnu.org/old-gnu/Manuals/flex-2.5.4/html_mono/flex.html#SEC7
- */
-/* Opcoes para o flex */
+*/
+/* Opções para o flex */
 /* Código c colocado no escopo global do programa */
+#line 13 "../src/cmm.lex"
 #include <stdlib.h> // exit, EXIT_FAILURE, atexit
 #include <stdbool.h> // tipo bool
 #include <assert.h> // assert macro

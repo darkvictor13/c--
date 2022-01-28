@@ -1,11 +1,11 @@
- /**
+/**
     Arquivo de configuração para a linguagem c--
     
     Documentação utilizada para gerar arquivo:
         - https://ftp.gnu.org/old-gnu/Manuals/flex-2.5.4/html_mono/flex.html#SEC7
- */
+*/
 
-/* Opcoes para o flex */
+/* Opções para o flex */
 %option yylineno
 
 /* Código c colocado no escopo global do programa */
@@ -52,17 +52,17 @@ FLOAT_LITERAL {INTEGER_LITERAL}"."{INTEGER_LITERAL}
 STRING_LITERAL_BEGIN \"
 CHAR_LITERAL \'\\?.
 
-PREPROCESSOR_COMAND "#"(.*)
+PREPROCESSOR_COMMAND "#"(.*)
 KEYWORD "if"|"else"|"const"|"for"|"while"|"struct"
 DATA_TYPE "int"|"float"|"double"|"char"
-ARITMETIC_OPERATOR "+""+"?|"-""-"?|"/"|"*"|"sizeof"|"["{INTEGER_LITERAL}"]"
+ARITHMETIC_OPERATOR "+""+"?|"-""-"?|"/"|"*"|"sizeof"|"["{INTEGER_LITERAL}"]"
 RELATIONAL_OPERATOR "&&"|"||"|"!"|("="|"!")"="|("<"|">")"="?
 END_EXP ;
 ASSIGNMENT "="|"+="|"-="|"*="|"/="|"%="|"<<="|">>="|"&="|"^="|"|="
 
 /* aceita comentários em uma linha */
-COMENT_MULTILINE_BEGIN "/*"
-COMENT_SINGLE_LINE ("//".*)
+COMMENT_MULTILINE_BEGIN "/*"
+COMMENT_SINGLE_LINE ("//".*)
 
 ID ({LETTER})({LETTER}|{DIGIT}|_)*
 
@@ -72,17 +72,18 @@ ID ({LETTER})({LETTER}|{DIGIT}|_)*
     quando encontrar uma expressão regular definida acima
  */
 
-{COMENT_MULTILINE_BEGIN} BEGIN(comment);
+/* Elimina comentários de múltiplas linhas */
+{COMMENT_MULTILINE_BEGIN} BEGIN(comment);
 <comment>[^("*"|"\")]*
 <comment>"*"+[^*/\n]*
 <comment>"\n"
 <comment>"*"+"/" BEGIN(INITIAL);
 
-{COMENT_SINGLE_LINE} /* elimina resto da linha do cometário */
+{COMMENT_SINGLE_LINE} /* elimina resto da linha do cometário */
 
 {BLANK_ENTER}+ /* Elimina espaços em branco e \n */
 
-{PREPROCESSOR_COMAND} {
+{PREPROCESSOR_COMMAND} {
     doLog (
         LOG_TYPE_INFO,
         "Comando para o preprocessador [%s]",
@@ -114,7 +115,7 @@ ID ({LETTER})({LETTER}|{DIGIT}|_)*
     );
 }
 
-{ARITMETIC_OPERATOR} {
+{ARITHMETIC_OPERATOR} {
     doLog (
         LOG_TYPE_INFO,
         "Operador aritmético [%s] encontrado",
