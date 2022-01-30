@@ -1,11 +1,16 @@
 /**
-    Arquivo de configuração para a linguagem c--
-    
+    Arquivo de definição da linguagem C--, Um subconjunto da linguagem C
+
+    Escrito em lex/flex esse arquivo tem como objetivo definir
+    os tokens da linguagem, bem como as ações tomadas quando os mesmos são
+    encontrados em um arquivo fonte. Sendo assim realizando a análise léxica.
+
     Documentação utilizada para gerar arquivo:
         - https://ftp.gnu.org/old-gnu/Manuals/flex-2.5.4/html_mono/flex.html#SEC7
 */
 
 /* Opções para o flex */
+/* Armazena em yylineno qual linha do arquivo está sendo lida */
 %option yylineno
 
 /* Código c colocado no escopo global do programa */
@@ -13,21 +18,35 @@
 #include <stdlib.h> // exit, EXIT_FAILURE
 #include <stdbool.h> // tipo bool
 #include <assert.h> // assert macro
-#include <math.h>
 
 #include "headers/token_definitions.h"
 #include "log_info/logging.h"
 #include "utils/user_input.h"
 #include "utils/utils.h"
 
-char buffer[255];
+char buffer[256]; /// utilizado para armazenar temporariamente trechos de tokens
 
-uint8_t is_open_block = 0;
-uint8_t is_open_expression = 0;
+uint8_t is_open_block = 0; /// conta a quantidade de {}
+uint8_t is_open_expression = 0; /// conta a quantidade de ()
 
-bool have_error;
+bool have_error = false; /// guarda se houve algum erro durante a execução do processo
 
-void exitFunction(const char * filename);
+/**
+ * @brief Últimas verificações léxicas após terminado o input de tokens
+ *
+ * @pre leitura de tokens encerrada
+ * @post deixa a variável global have_error em seu estado final
+ */
+void lastVerify(const char * filename);
+/**
+ * @brief Função chamada ao encerrar o programa,
+ * informando o usuário e realizando as limpezas necessárias
+ *
+ * Deve ser passada para função atexit
+ * @pre leitura de tokens encerrada
+ * @post deixa a variável global have_error em seu estado final
+ */
+void exitFunction(void);
 %}
 %x comment string_literal char_literal
 
@@ -48,36 +67,49 @@ BLANK [ \t]
 ENTER [\n]
 /* Define uma regra que aceita qualquer um BLANK ou um ENTER */
 BLANK_ENTER ({BLANK}|{ENTER})
+/* Define o início de um comentário de multiplas linhas, utilizado em Start conditions */
+COMMENT_MULTILINE_BEGIN "/*"
+/* aceita comentários em uma linha */
+COMMENT_SINGLE_LINE ("//".*)
+
 
 /* ----------------- */
 /* Classes de tokens */
 /* ----------------- */
+/* Token que aceita comandos para o preprocessador */
 PREPROCESSOR_COMMAND "#"(.*)
+/* Token que aceita todas as palavras chave reconhecidas pela linguagem */
 KEYWORD "if"|"else"|"const"|"for"|"while"|"struct"
+/* Token que aceita todos os tipos de dados da linguagem */
 DATA_TYPE "int"|"float"|"double"|"char"
+/* Token que aceita simbolos de atribuição */
 ASSIGNMENT "="|"+="|"-="|"*="|"/="|"%="|"<<="|">>="|"&="|"^="|"|="
+/* Token que aceita os operadores aritiméticos */
 ARITHMETIC_OPERATOR "+""+"?|"-""-"?|"/"|"*"|"sizeof"|"["{INTEGER_LITERAL}"]"
+/* Token que aceita os operadores relacionais */
 RELATIONAL_OPERATOR "&&"|"||"|"!"|("="|"!")"="|("<"|">")"="?
+/* Token que aceita o caractere de fim de expressão */
 END_EXP ;
-/* Definição do caractere que é considerado inicio de um escopo */
+/* Token que aceita o caractere que é considerado inicio de um escopo */
 BLOCK_BEGIN "{"
-/* Definição do caractere que é considerado fim de um escopo */
+/* Token que aceita o caractere que é considerado fim de um escopo */
 BLOCK_END "}"
-/* Definição do caractere que é considerado inicio de uma expressão */
+/* Token que aceita o caractere que é considerado inicio de uma expressão */
 EXPRESSION_BEGIN "("
-/* Definição do caractere que é considerado fim de uma expressão */
+/* Token que aceita o caractere que é considerado fim de uma expressão */
 EXPRESSION_END ")"
 
 /* valores constantes para expressões */
+/* Token que aceita valores inteiros literais */
 INTEGER_LITERAL {DIGIT}+
+/* Token que aceita valores reais literais */
 FLOAT_LITERAL {INTEGER_LITERAL}"."{INTEGER_LITERAL}
+/* Token que aceita strings literais, utilizado em Start conditions*/
 STRING_LITERAL_BEGIN \"
+/* Token que aceita valores de caracteres literais, utilizado em Start conditions*/
 CHAR_LITERAL \'\\?.
 
-/* aceita comentários em uma linha */
-COMMENT_MULTILINE_BEGIN "/*"
-COMMENT_SINGLE_LINE ("//".*)
-
+/* Token que aceita identificadores da linguagem (nomes de funções, variáveis) */
 ID ({LETTER})({ALPHA_NUM}|_)*
 
 %% /* separador para a segunda parte do arquivo */
@@ -284,7 +316,7 @@ ID ({LETTER})({ALPHA_NUM}|_)*
     para serem colocadas no final do arquivo main.c
 */
 
-void exitFunction(const char * filename) {
+void lastVerify(const char * filename) {
     if (is_open_block) {
         doLog(LOG_TYPE_ERROR, "Fim de arquivo antes de fechar o escopo {...");
     }
@@ -296,13 +328,21 @@ void exitFunction(const char * filename) {
         have_error? "Falha" : "Sucesso",
         filename
     );
-	printf("Encerrando o compilador c--\n");
 }
 
-int main(int argc,char** argv) {
-    assert(0 < argc && argc < 3);
+void exitFunction(void) {
+    // não foi usado printf devido a possiveis falhas
+	puts("Encerrando o compilador c--");
+}
 
-    char *filename;
+/// função main copiada para o main.c
+int main(int argc, char * const argv[]) {
+    // garante que o usuário passou 0 ou 1 argumentos
+    assert(0 < argc && argc < 3);
+    // configura função chamada ao sair do programa
+    atexit(exitFunction);
+
+    char *filename; /// caminho para o arquivo a ser analisado
     if (argc == 2) {
         filename = argv[1];
     }else {
@@ -311,12 +351,11 @@ int main(int argc,char** argv) {
     FILE *file_ptr = fopen(filename, "r");
 	if (file_ptr == NULL) {
 		printf("Falha ao abrir o arquivo de entrada\n");
-		printf("Encerrando o compilador c--\n"); // colocar no atexit
 		return EXIT_FAILURE;
 	}
 	yyin = file_ptr;
 
     yylex();
-    exitFunction(filename);
+    lastVerify(filename);
     return (have_error? EXIT_FAILURE : EXIT_SUCCESS);
 }

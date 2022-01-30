@@ -13,8 +13,8 @@
  *
  * @return char* ponteiro para um array na heap
  * que contém o nome do aquivo que o usuário deseja abrir
- * @pre Nenhuma
- * @post Nenhuma
+ * @pre stdin limpo para leitura
+ * @post usuário escolheu um arquivo para análise léxica
  */
 char * getFilenameFromUser();
 

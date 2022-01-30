@@ -1,6 +1,9 @@
 #ifndef TOKEN_DEFINITIONS
 #define TOKEN_DEFINITIONS
 
+/**
+ * @brief Define cada um dos tokens que podem ser reconhecidos pela linguagem
+ */
 typedef enum tokens {
     TOKEN_PREPROCESSOR_COMAND,
     TOKEN_KEYWORD,

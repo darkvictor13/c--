@@ -4,8 +4,8 @@ CC=gcc
 FLEX=flex
 
 LEX_FLAGS=-o $@
-CFLAGS=-O2
-LIBFLAGS=-lfl -lm
+CFLAGS=-O2 -Wall
+LIBFLAGS=-lfl
 
 LEX_SRC=$(SRC)/cmm.lex
 LEX_DEST=$(SRC)/main.c

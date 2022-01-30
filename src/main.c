@@ -1,6 +1,6 @@
-#line 1 "../src/main.c"
+#line 2 "../src/main.c"
 
-#line 3 "../src/main.c"
+#line 4 "../src/main.c"
 
 #define  YY_INT_ALIGNED short int
 
@@ -555,33 +555,52 @@ int yy_flex_debug = 0;
 char *yytext;
 #line 1 "../src/cmm.lex"
 /**
-    Arquivo de configuração para a linguagem c--
-    
+    Arquivo de definição da linguagem C--, Um subconjunto da linguagem C
+
+    Escrito em lex/flex esse arquivo tem como objetivo definir
+    os tokens da linguagem, bem como as ações tomadas quando os mesmos são
+    encontrados em um arquivo fonte. Sendo assim realizando a análise léxica.
+
     Documentação utilizada para gerar arquivo:
         - https://ftp.gnu.org/old-gnu/Manuals/flex-2.5.4/html_mono/flex.html#SEC7
 */
 /* Opções para o flex */
+/* Armazena em yylineno qual linha do arquivo está sendo lida */
 /* Código c colocado no escopo global do programa */
-#line 13 "../src/cmm.lex"
+#line 18 "../src/cmm.lex"
 #include <stdlib.h> // exit, EXIT_FAILURE
 #include <stdbool.h> // tipo bool
 #include <assert.h> // assert macro
-#include <math.h>
 
 #include "headers/token_definitions.h"
 #include "log_info/logging.h"
 #include "utils/user_input.h"
 #include "utils/utils.h"
 
-char buffer[255];
+char buffer[256]; /// utilizado para armazenar temporariamente trechos de tokens
 
-uint8_t is_open_block = 0;
-uint8_t is_open_expression = 0;
+uint8_t is_open_block = 0; /// conta a quantidade de {}
+uint8_t is_open_expression = 0; /// conta a quantidade de ()
 
-bool have_error;
+bool have_error = false; /// guarda se houve algum erro durante a execução do processo
 
-void exitFunction(const char * filename);
-#line 584 "../src/main.c"
+/**
+ * @brief Últimas verificações léxicas após terminado o input de tokens
+ *
+ * @pre leitura de tokens encerrada
+ * @post deixa a variável global have_error em seu estado final
+ */
+void lastVerify(const char * filename);
+/**
+ * @brief Função chamada ao encerrar o programa,
+ * informando o usuário e realizando as limpezas necessárias
+ *
+ * Deve ser passada para função atexit
+ * @pre leitura de tokens encerrada
+ * @post deixa a variável global have_error em seu estado final
+ */
+void exitFunction(void);
+#line 604 "../src/main.c"
 
 /* ---------- */
 /* Definições */
@@ -592,16 +611,29 @@ void exitFunction(const char * filename);
 /* Definição dos caracteres que são considerados espaço em branco */
 /* Definição do caractere que é considerados quebra de linha */
 /* Define uma regra que aceita qualquer um BLANK ou um ENTER */
+/* Define o início de um comentário de multiplas linhas, utilizado em Start conditions */
+/* aceita comentários em uma linha */
 /* ----------------- */
 /* Classes de tokens */
 /* ----------------- */
-/* Definição do caractere que é considerado inicio de um escopo */
-/* Definição do caractere que é considerado fim de um escopo */
-/* Definição do caractere que é considerado inicio de uma expressão */
-/* Definição do caractere que é considerado fim de uma expressão */
+/* Token que aceita comandos para o preprocessador */
+/* Token que aceita todas as palavras chave reconhecidas pela linguagem */
+/* Token que aceita todos os tipos de dados da linguagem */
+/* Token que aceita simbolos de atribuição */
+/* Token que aceita os operadores aritiméticos */
+/* Token que aceita os operadores relacionais */
+/* Token que aceita o caractere de fim de expressão */
+/* Token que aceita o caractere que é considerado inicio de um escopo */
+/* Token que aceita o caractere que é considerado fim de um escopo */
+/* Token que aceita o caractere que é considerado inicio de uma expressão */
+/* Token que aceita o caractere que é considerado fim de uma expressão */
 /* valores constantes para expressões */
-/* aceita comentários em uma linha */
-#line 604 "../src/main.c"
+/* Token que aceita valores inteiros literais */
+/* Token que aceita valores reais literais */
+/* Token que aceita strings literais, utilizado em Start conditions*/
+/* Token que aceita valores de caracteres literais, utilizado em Start conditions*/
+/* Token que aceita identificadores da linguagem (nomes de funções, variáveis) */
+#line 637 "../src/main.c"
 
 #define INITIAL 0
 #define comment 1
@@ -821,9 +853,9 @@ YY_DECL
 		}
 
 	{
-#line 83 "../src/cmm.lex"
+#line 115 "../src/cmm.lex"
 
-#line 85 "../src/cmm.lex"
+#line 117 "../src/cmm.lex"
  /*
     Nessa parte define-se as ações a serem tomadas
     quando encontrar uma das classes de tokens previamente
@@ -831,7 +863,7 @@ YY_DECL
  */
 
  /* Elimina comentários de múltiplas linhas */
-#line 834 "../src/main.c"
+#line 867 "../src/main.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -900,45 +932,45 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 92 "../src/cmm.lex"
+#line 124 "../src/cmm.lex"
 BEGIN(comment);
 	YY_BREAK
 case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
-#line 93 "../src/cmm.lex"
+#line 125 "../src/cmm.lex"
 
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 94 "../src/cmm.lex"
+#line 126 "../src/cmm.lex"
 
 	YY_BREAK
 case 4:
 /* rule 4 can match eol */
 YY_RULE_SETUP
-#line 95 "../src/cmm.lex"
+#line 127 "../src/cmm.lex"
 
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 96 "../src/cmm.lex"
+#line 128 "../src/cmm.lex"
 BEGIN(INITIAL);
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 98 "../src/cmm.lex"
+#line 130 "../src/cmm.lex"
 /* elimina resto da linha do cometário */
 	YY_BREAK
 case 7:
 /* rule 7 can match eol */
 YY_RULE_SETUP
-#line 100 "../src/cmm.lex"
+#line 132 "../src/cmm.lex"
 /* Elimina espaços em branco e \n */
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 102 "../src/cmm.lex"
+#line 134 "../src/cmm.lex"
 {
     doLog (
         LOG_TYPE_INFO,
@@ -949,7 +981,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 110 "../src/cmm.lex"
+#line 142 "../src/cmm.lex"
 {
     doLog (
         LOG_TYPE_INFO,
@@ -960,7 +992,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 118 "../src/cmm.lex"
+#line 150 "../src/cmm.lex"
 {
     doLog (
         LOG_TYPE_INFO,
@@ -971,7 +1003,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 126 "../src/cmm.lex"
+#line 158 "../src/cmm.lex"
 {
     doLog (
         LOG_TYPE_INFO,
@@ -982,7 +1014,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 134 "../src/cmm.lex"
+#line 166 "../src/cmm.lex"
 {
     doLog (
         LOG_TYPE_INFO,
@@ -993,7 +1025,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 142 "../src/cmm.lex"
+#line 174 "../src/cmm.lex"
 {
     doLog (
         LOG_TYPE_INFO,
@@ -1004,7 +1036,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 150 "../src/cmm.lex"
+#line 182 "../src/cmm.lex"
 {
     doLog (
         LOG_TYPE_INFO,
@@ -1014,7 +1046,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 157 "../src/cmm.lex"
+#line 189 "../src/cmm.lex"
 {
     doLog (
         LOG_TYPE_INFO,
@@ -1025,7 +1057,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 165 "../src/cmm.lex"
+#line 197 "../src/cmm.lex"
 {
     if (is_open_block) {
         doLog (
@@ -1043,7 +1075,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 180 "../src/cmm.lex"
+#line 212 "../src/cmm.lex"
 {
     doLog (
         LOG_TYPE_INFO,
@@ -1054,7 +1086,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 188 "../src/cmm.lex"
+#line 220 "../src/cmm.lex"
 {
     if (is_open_expression) {
         doLog (
@@ -1072,7 +1104,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 203 "../src/cmm.lex"
+#line 235 "../src/cmm.lex"
 {
     doLog (
         LOG_TYPE_INFO,
@@ -1083,7 +1115,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 211 "../src/cmm.lex"
+#line 243 "../src/cmm.lex"
 {
     doLog (
         LOG_TYPE_INFO,
@@ -1094,7 +1126,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 219 "../src/cmm.lex"
+#line 251 "../src/cmm.lex"
 {
     _strncpy(buffer, yytext + 1, yyleng - 1);
     BEGIN(char_literal);
@@ -1102,7 +1134,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 223 "../src/cmm.lex"
+#line 255 "../src/cmm.lex"
 {
     doLog (
         LOG_TYPE_INFO,
@@ -1114,7 +1146,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 232 "../src/cmm.lex"
+#line 264 "../src/cmm.lex"
 {
     doLog (
         LOG_TYPE_ERROR,
@@ -1127,12 +1159,12 @@ YY_RULE_SETUP
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 242 "../src/cmm.lex"
+#line 274 "../src/cmm.lex"
 BEGIN(string_literal);
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 243 "../src/cmm.lex"
+#line 275 "../src/cmm.lex"
 {
     doLog (
         LOG_TYPE_INFO,
@@ -1145,7 +1177,7 @@ YY_RULE_SETUP
 case 26:
 /* rule 26 can match eol */
 YY_RULE_SETUP
-#line 252 "../src/cmm.lex"
+#line 284 "../src/cmm.lex"
 {
     doLog (
         LOG_TYPE_ERROR,
@@ -1157,14 +1189,14 @@ YY_RULE_SETUP
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 261 "../src/cmm.lex"
+#line 293 "../src/cmm.lex"
 {
     _strncpy(buffer, yytext, yyleng);
 }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 265 "../src/cmm.lex"
+#line 297 "../src/cmm.lex"
 {
     doLog (
         LOG_TYPE_INFO,
@@ -1176,7 +1208,7 @@ YY_RULE_SETUP
 /* Qualquer caractere que não foi definido antes deve lançar um erro */
 case 29:
 YY_RULE_SETUP
-#line 274 "../src/cmm.lex"
+#line 306 "../src/cmm.lex"
 {
     doLog (
         LOG_TYPE_ERROR,
@@ -1187,10 +1219,10 @@ YY_RULE_SETUP
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 282 "../src/cmm.lex"
+#line 314 "../src/cmm.lex"
 ECHO;
 	YY_BREAK
-#line 1193 "../src/main.c"
+#line 1226 "../src/main.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(comment):
 case YY_STATE_EOF(string_literal):
@@ -2210,14 +2242,14 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 282 "../src/cmm.lex"
+#line 314 "../src/cmm.lex"
 
 /*
     Aqui temos mais definições C
     para serem colocadas no final do arquivo main.c
 */
 
-void exitFunction(const char * filename) {
+void lastVerify(const char * filename) {
     if (is_open_block) {
         doLog(LOG_TYPE_ERROR, "Fim de arquivo antes de fechar o escopo {...");
     }
@@ -2229,10 +2261,18 @@ void exitFunction(const char * filename) {
         have_error? "Falha" : "Sucesso",
         filename
     );
-	printf("Encerrando o compilador c--\n");
 }
 
-int main(int argc,char** argv) {
+void exitFunction(void) {
+    // não foi usado printf devido a possiveis falhas
+	puts("Encerrando o compilador c--");
+}
+
+/// função main copiada para o main.c
+int main(int argc, char * const argv[]) {
+    // configura função chamada ao sair do programa
+    atexit(exitFunction);
+    // garante que o usuário passou 0 ou 1 argumentos
     assert(0 < argc && argc < 3);
 
     char *filename;
@@ -2244,12 +2284,11 @@ int main(int argc,char** argv) {
     FILE *file_ptr = fopen(filename, "r");
 	if (file_ptr == NULL) {
 		printf("Falha ao abrir o arquivo de entrada\n");
-		printf("Encerrando o compilador c--\n"); // colocar no atexit
 		return EXIT_FAILURE;
 	}
 	yyin = file_ptr;
 
     yylex();
-    exitFunction(filename);
+    lastVerify(filename);
     return (have_error? EXIT_FAILURE : EXIT_SUCCESS);
 }

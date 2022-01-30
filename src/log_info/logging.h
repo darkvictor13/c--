@@ -12,6 +12,13 @@ extern int yylineno;
 extern bool have_error;
 
 // TODO always inline
+/**
+ * @brief Transforma o número de um tipo de mensagem
+ * em uma palavra para ser impressa
+ * 
+ * @param type o tipo da mensagem
+ * @return const char* palavra correspondente ao tipo
+ */
 const char * typeToMessage(logType type);
 
 /**
