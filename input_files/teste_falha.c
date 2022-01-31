@@ -13,3 +13,4 @@ int main () {
     }else {
         numero /= (10 + 2 - 1 * sizeof(int));
     }
+}

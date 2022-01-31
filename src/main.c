@@ -562,7 +562,7 @@ char *yytext;
     encontrados em um arquivo fonte. Sendo assim realizando a análise léxica.
 
     Documentação utilizada para gerar arquivo:
-        - https://ftp.gnu.org/old-gnu/Manuals/flex-2.5.4/html_mono/flex.html#SEC7
+        - https://ftp.gnu.org/old-gnu/Manuals/flex-2.5.4/html_mono/flex.html
 */
 /* Opções para o flex */
 /* Armazena em yylineno qual linha do arquivo está sendo lida */
@@ -611,7 +611,7 @@ void exitFunction(void);
 /* Definição dos caracteres que são considerados espaço em branco */
 /* Definição do caractere que é considerados quebra de linha */
 /* Define uma regra que aceita qualquer um BLANK ou um ENTER */
-/* Define o início de um comentário de multiplas linhas, utilizado em Start conditions */
+/* Define o início de um comentário de múltiplas linhas, utilizado em Start conditions */
 /* aceita comentários em uma linha */
 /* ----------------- */
 /* Classes de tokens */
@@ -619,9 +619,9 @@ void exitFunction(void);
 /* Token que aceita comandos para o preprocessador */
 /* Token que aceita todas as palavras chave reconhecidas pela linguagem */
 /* Token que aceita todos os tipos de dados da linguagem */
-/* Token que aceita simbolos de atribuição */
+/* Token que aceita símbolos de atribuição */
 /* ASSIGNMENT "="|"+="|"-="|"*="|"/="|"%="|"<<="|">>="|"&="|"^="|"|=" */
-/* Token que aceita os operadores aritiméticos */
+/* Token que aceita os operadores aritméticos */
 /* Token que aceita os operadores relacionais */
 /* Token que aceita o caractere de fim de expressão */
 /* Token que aceita o caractere que é considerado inicio de um escopo */
@@ -2265,7 +2265,7 @@ void lastVerify(const char * filename) {
 }
 
 void exitFunction(void) {
-    // não foi usado printf devido a possiveis falhas
+    // não foi usado printf devido a possíveis falhas
 	puts("Encerrando o compilador c--");
 }
 

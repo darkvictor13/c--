@@ -1,6 +1,5 @@
 # c--
 Um reduzido analisador léxico de um subconjunto da linguagem procedural C.
-Descrição da linguagem X;
 
 ## Integrantes:
     - Victor Emanuel Almeida;
@@ -8,7 +7,10 @@ Descrição da linguagem X;
 
 ## A linguagem c--:
 
-### Expressões regulares dos Tokens reconhecidos
+### Descrição da linguagem
+O objetivo da linguagem C-- é implementar um subconjunto da linguagem procedural C, para isso recriando algumas das expressões regulares dos tokens utilizados por Dennis Ritchie. Tudo isso com o objetivo de aprimorar os nossos conhecimentos a respeito da criação de analisadores léxicos.
+
+### Expressões regulares dos tokens reconhecidos
 - comando para o preprocessador: "#"(.*)
 - palavras reservadas: "if"|"else"|"const"|"for"|"while"|"struct"
 - tipos de dados: "int"|"float"|"double"|"char"
@@ -26,6 +28,8 @@ Descrição da linguagem X;
 - char literal: \\'\\\\?.\\'
 - identificador: ({LETTER})({ALPHA_NUM}|_)*
 
+A descrição das expressões regulares supracitadas encontra-se no arquivo fonte "cmm.lex" das linhas 76-114
+
 ### Identificando erros
 Uma vez definidos os tokens a serem identificados, foram definidas estratégias diferentes para reconhecer erros léxicos comuns, tais como:
 - Qualquer caractere não reconhecido por nenhuma expressão regular é lido descartado e gerado o erro;
@@ -40,8 +44,8 @@ Uma vez definidos os tokens a serem identificados, foram definidas estratégias 
 │   ├── setup_arch.sh
 │   └── setup_ubuntu.sh
 ├── input_files
-│   ├── falha.c
-│   └── sucesso.c
+│   ├── teste_falha.c
+│   └── teste_sucesso.c
 ├── README.md
 └── src
     ├── cmm.lex
@@ -90,3 +94,6 @@ Uma vez com make e flex instalado basta iniciar o processo de compilação rodan
 Tendo gerado o executável "main.out" dentro da pasta build, basta executá-lo podendo passar um único argumento adicional sendo esse o caminho relativo para um arquivo texto o qual será tratado como o fonte a ser analisado, caso não tenha parâmetros o input deve vir da linha de comandos.
 
 	./main.out [caminho_para_fonte]
+
+## Referências
+- https://ftp.gnu.org/old-gnu/Manuals/flex-2.5.4/html_mono/flex.html

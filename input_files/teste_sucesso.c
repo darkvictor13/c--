@@ -1,4 +1,4 @@
-#include uma lib aleatoria
+#include <stdio.h>
 
 int main () {
     // comentario
