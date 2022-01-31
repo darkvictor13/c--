@@ -4,7 +4,6 @@
 \usepackage{graphicx}
 \usepackage{colortbl}
 \usepackage{color}
-\usepackage{cite}
 \usepackage{breqn}
 \usepackage{listings}
 
@@ -49,7 +48,7 @@
 
 \author[Grupo: c--]{Victor E. Almeida \and Marco A. G. Pedroso}
 
-\title{Analisador léxico para a linguagem C--}
+\title{Analisador léxico para a linguagem C- -}
 \subtitle{Demonstrando o software}
 \date{\today}
 \institute{UNIOESTE}
@@ -112,6 +111,7 @@
     
 \end{frame}
 
+\section{Analisádor léxico}\label{Analisádor léxico}
 \begin{frame}[allowframebreaks]
     \frametitle{Lista de Tokens reconhecidos}
     \begin{itemize}
@@ -128,8 +128,8 @@
         \item\textbf{fecha parenteses}: )
         \item\textbf{inteiro literal}: \{DIGIT\}+
         \item\textbf{float literal}: \{INTEGER\_LITERAL\}``.''\{INTEGER\_LITERAL\}
-        \item\textbf{string literal}: \backslash``[\^ \backslash\backslash\backslash n \backslash``]+\backslash''
-        \item\textbf{char literal}: \backslash `\backslash \backslash \?.\backslash'
+        \item\textbf{string literal}: \textbackslash{}``[\^{}\textbackslash{}\textbackslash{}\textbackslash{}n\textbackslash{}'']+
+        \item\textbf{char literal}: \textbackslash{}`\textbackslash{}\textbackslash{}$?$.\textbackslash{}'
         \item\textbf{identificador}: (\{LETTER\})(\{ALPHA\_NUM\}$|$\_)*
     \end{itemize}
 \end{frame}
@@ -156,13 +156,6 @@
         \includegraphics[width=.25\textwidth]{eletricidade.png}
     \end{figure}
     \Huge{Obrigado pela atenção}
-\end{frame}
-
-\section{Referências}\label{Referências}
-\begin{frame}[allowframebreaks]
-    \frametitle{Referências} 
-    \bibliography{ref}
-    \bibliographystyle{abbrv} % funciona
 \end{frame}
 
 \end{document}

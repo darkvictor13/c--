@@ -6,7 +6,7 @@
     encontrados em um arquivo fonte. Sendo assim realizando a análise léxica.
 
     Documentação utilizada para gerar arquivo:
-        - https://ftp.gnu.org/old-gnu/Manuals/flex-2.5.4/html_mono/flex.html#SEC7
+        - https://ftp.gnu.org/old-gnu/Manuals/flex-2.5.4/html_mono/flex.html
 */
 
 /* Opções para o flex */
