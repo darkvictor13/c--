@@ -4,7 +4,7 @@ CC=gcc
 FLEX=flex
 
 LEX_FLAGS=-o $@
-CFLAGS=-O2 -Wall
+CFLAGS=-O2 -Wall -std=c11
 LIBFLAGS=-lfl
 
 LEX_SRC=$(SRC)/cmm.lex

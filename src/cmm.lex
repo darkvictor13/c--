@@ -83,7 +83,8 @@ KEYWORD "if"|"else"|"const"|"for"|"while"|"struct"
 /* Token que aceita todos os tipos de dados da linguagem */
 DATA_TYPE "int"|"float"|"double"|"char"
 /* Token que aceita simbolos de atribuição */
-ASSIGNMENT "="|"+="|"-="|"*="|"/="|"%="|"<<="|">>="|"&="|"^="|"|="
+/* ASSIGNMENT "="|"+="|"-="|"*="|"/="|"%="|"<<="|">>="|"&="|"^="|"|=" */
+ASSIGNMENT ("+"|"-"|"*"|"/"|"%"|"<<"|">>"|"&"|"|"|"^")?"="
 /* Token que aceita os operadores aritiméticos */
 ARITHMETIC_OPERATOR "+""+"?|"-""-"?|"/"|"*"|"sizeof"|"["{INTEGER_LITERAL}"]"
 /* Token que aceita os operadores relacionais */
