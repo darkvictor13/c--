@@ -1,10 +1,10 @@
 # c--
-Um reduzido analisador léxico de um subconjunto da linguagem C.
+Um reduzido analisador léxico de um subconjunto da linguagem procedural C.
 Descrição da linguagem X;
 
 ## Integrantes:
     - Victor Emanuel Almeida;
-    - Marco A. Guerra Pedroso.
+    - Marco Aurélio Guerra Pedroso.
 
 ## A linguagem c--:
 
@@ -13,7 +13,7 @@ Descrição da linguagem X;
 - palavras reservadas: "if"|"else"|"const"|"for"|"while"|"struct"
 - tipos de dados: "int"|"float"|"double"|"char"
 - atribuição: ("+"|"-"|"*"|"/"|"%"|"<<"|">>"|"&"|"|"|"^")?"="
-- operador aritimetico: "+""+"?|"-""-"?|"/"|"*"|"sizeof"|"["{INTEGER_LITERAL}"]"
+- operador aritmético: "+""+"?|"-""-"?|"/"|"*"|"sizeof"|"["{INTEGER_LITERAL}"]"
 - operador relacional: "&&"|"||"|"!"|("="|"!")"="|("<"|">")"="?
 - fim de expressão: ;
 - início de bloco: "{"

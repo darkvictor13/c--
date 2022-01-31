@@ -67,7 +67,7 @@ BLANK [ \t]
 ENTER [\n]
 /* Define uma regra que aceita qualquer um BLANK ou um ENTER */
 BLANK_ENTER ({BLANK}|{ENTER})
-/* Define o início de um comentário de multiplas linhas, utilizado em Start conditions */
+/* Define o início de um comentário de múltiplas linhas, utilizado em Start conditions */
 COMMENT_MULTILINE_BEGIN "/*"
 /* aceita comentários em uma linha */
 COMMENT_SINGLE_LINE ("//".*)
@@ -82,10 +82,10 @@ PREPROCESSOR_COMMAND "#"(.*)
 KEYWORD "if"|"else"|"const"|"for"|"while"|"struct"
 /* Token que aceita todos os tipos de dados da linguagem */
 DATA_TYPE "int"|"float"|"double"|"char"
-/* Token que aceita simbolos de atribuição */
+/* Token que aceita símbolos de atribuição */
 /* ASSIGNMENT "="|"+="|"-="|"*="|"/="|"%="|"<<="|">>="|"&="|"^="|"|=" */
 ASSIGNMENT ("+"|"-"|"*"|"/"|"%"|"<<"|">>"|"&"|"|"|"^")?"="
-/* Token que aceita os operadores aritiméticos */
+/* Token que aceita os operadores aritméticos */
 ARITHMETIC_OPERATOR "+""+"?|"-""-"?|"/"|"*"|"sizeof"|"["{INTEGER_LITERAL}"]"
 /* Token que aceita os operadores relacionais */
 RELATIONAL_OPERATOR "&&"|"||"|"!"|("="|"!")"="|("<"|">")"="?
@@ -332,7 +332,7 @@ void lastVerify(const char * filename) {
 }
 
 void exitFunction(void) {
-    // não foi usado printf devido a possiveis falhas
+    // não foi usado printf devido a possíveis falhas
 	puts("Encerrando o compilador c--");
 }
 

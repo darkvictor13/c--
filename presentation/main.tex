@@ -65,7 +65,7 @@
 \begin{frame}
     \frametitle{Softwares utilizados}
     \begin{itemize}
-        \item \textbf{Sistema para compilar}: GNU make,
+        \item \textbf{Sistema para compilar}: GNU make e gcc,
         \item \textbf{Linguagem de programação}: C11,
         \item \textbf{Gerador de analisador léxico}: GNU flex.
     \end{itemize}
@@ -74,7 +74,7 @@
 \section{lex/Flex}\label{lex/Flex}
 
 \begin{frame}[t,fragile]{\insertsectionhead}
-    \frametitle{Exemplo minimo do flex}
+    \frametitle{Exemplo mínimo do flex}
     \begin{lstlisting}
         int num_lines = 0, num_chars = 0;
 
@@ -111,7 +111,7 @@
     
 \end{frame}
 
-\section{Analisádor léxico}\label{Analisádor léxico}
+\section[Analisador]{Analisador léxico}\label{Analisádor léxico}
 \begin{frame}[allowframebreaks]
     \frametitle{Lista de Tokens reconhecidos}
     \begin{itemize}
@@ -119,7 +119,7 @@
         \item\textbf{palavras reservadas}: ``if''$|$``else''$|$``const''$|$``for''$|$``while''$|$``struct''
         \item\textbf{tipos de dados}: ``int''$|$``float''$|$``double''$|$``char''
         \item\textbf{atribuição}: (``+''$|$``-''$|$``*''$|$``/''$|$``\%''$|$``$\ll$''$|$``$\gg$''$|$``\&''$|$``$|$''$|$``^'')$?$``$=$''
-        \item\textbf{operador aritimetico}: ``+''``+''$?|$``-''``-''$?|$``/''$|$``*''$|$``sizeof''$|$``[''\{INTEGER\_LITERAL\}``]''
+        \item\textbf{operador aritmético}: ``+''``+''$?|$``-''``-''$?|$``/''$|$``*''$|$``sizeof''$|$``[''\{INTEGER\_LITERAL\}``]''
         \item\textbf{operador relacional}: ``\&\&''$|$``$||$''$|$``!''$|$(``=''$|$``!'')``=''$|$(``$<$''$|$``$>$'')``$=$''$?$
         \item\textbf{fim de expressão}: ;
         \item\textbf{início de bloco}: \{
@@ -151,9 +151,9 @@
     \Huge{Perguntas?}
     \begin{figure}
         \centering
-        \includegraphics[width=.25\textwidth]{alerta.png}
-        \includegraphics[width=.25\textwidth]{perigo.png}
-        \includegraphics[width=.25\textwidth]{eletricidade.png}
+        \includegraphics[width=.3\textwidth]{alerta.png}
+        \includegraphics[width=.3\textwidth]{perigo.png}
+        \includegraphics[width=.3\textwidth]{eletricidade.png}
     \end{figure}
     \Huge{Obrigado pela atenção}
 \end{frame}
