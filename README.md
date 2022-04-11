@@ -28,6 +28,9 @@ O objetivo da linguagem C-- é implementar um subconjunto da linguagem procedura
 - char literal: \\'\\\\?.\\'
 - identificador: ({LETTER})({ALPHA_NUM}|_)*
 
+### Descrição da gramática
+-
+
 A descrição das expressões regulares supracitadas encontra-se no arquivo fonte "cmm.lex" das linhas 76-114
 
 ### Identificando erros
