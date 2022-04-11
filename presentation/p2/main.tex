@@ -1,3 +1,11 @@
+%• Descrição breve da linguagem X e visão geral da gramática implementada;
+%• Descrição de como cada membro da equipe contribuiu no desenvolvimento do trabalho;
+%• No final da apresentação, deverá ser demonstrada a execução do software desenvolvido
+%usando os arquivos de código fonte sem e com erro sintático (fonte1.txt e fonte3.txt),
+%incluindo exibição de parte da árvore sintática para o código sem erro.
+%10. Após o encerramento do seminário, o professor pode fazer perguntas a
+
+
 \documentclass[12pt]{beamer}
 \usepackage[utf8]{inputenc}
 \usepackage[portuguese]{babel}
@@ -72,24 +80,28 @@
     \end{itemize}
 \end{frame}
 
+\begin{frame}
+    \frametitle{}
+\end{frame}
+
 \section{lex/Flex}\label{lex/Flex}
 
 \begin{frame}[t,fragile]{\insertsectionhead}
-    \frametitle{Exemplo mínimo do flex}
+    \frametitle{Exemplo mínimo do bison}
     \begin{lstlisting}
-        int num_lines = 0, num_chars = 0;
+    %{
+        definicoes C
+    %}
+    %token algum_token
+    %start simbolo_inicial
 
-        %%
-        \n      ++num_lines; ++num_chars;
-        .       ++num_chars;
-        %%
+    %%
+    simbolo_inicial: algum_token ';'
+    %%
 
-        int main() {
-            yylex();
-            printf("lines = %d, chars = %d\n",
-                    num_lines, num_chars);
-            return 0;
-        }
+    int main() {
+        return yyparse();
+    }
     \end{lstlisting}
 \end{frame}
 
@@ -99,14 +111,15 @@
     \begin{center}
         
     \begin{lstlisting}
-    EXPRESSION_BEGIN "("
-    {EXPRESSION_BEGIN} {
-        doLog (
-            LOG_TYPE_INFO,
-            "inicio de expressao [(] encontrado"
-        );
-        is_open_expression++;
-    }
+    keyword:
+	    TOKEN_KEYWORD_IF
+	    | TOKEN_KEYWORD_ELSE
+	    | TOKEN_KEYWORD_CONST
+	    | TOKEN_KEYWORD_FOR
+	    | TOKEN_KEYWORD_WHILE
+	    | TOKEN_KEYWORD_RETURN
+	    | TOKEN_KEYWORD_STRUCT
+	    ;
     \end{lstlisting}
     \end{center}
     
@@ -114,25 +127,13 @@
 
 \section[Analisador]{Analisador léxico}\label{Analisádor léxico}
 \begin{frame}[allowframebreaks]
-    \frametitle{Lista de Tokens reconhecidos}
+    \frametitle{Lista de algumas regras gramaticais}
     \begin{itemize}
-        \item\textbf{comando para o preprocessador}: ``\#''(.*)
-        \item\textbf{palavras reservadas}: ``if''$|$``else''$|$``const''$|$``for''$|$``while''$|$``struct''
-        \item\textbf{tipos de dados}:\\``int''$|$``float''$|$``double''$|$``char''
-        \item\textbf{atribuição}: (``+''$|$``-''$|$``*''$|$``/''$|$``\%''$|$``$\ll$''$|$``$\gg$''$|$``\&''$|$``$|$''$|$``^'')$?$``$=$''
-        \item\textbf{operador aritmético}:\\``+''``+''$?|$``-''``-''$?|$``/''$|$``*''$|$``sizeof''$|$\\``[''\{{\small INTEGER\_LITERAL}\}``]''
-        \item\textbf{operador relacional}: ``\&\&''$|$``$||$''$|$``!''$|$(``=''$|$``!'')``=''$|$(``$<$''$|$``$>$'')``$=$''$?$
+        \item $<$programa$>$~$::=$ TOKEN\_PREPROCESSOR\_COMMAND $<$programa$>~|$ $<$definition$>~<$programa$>~|~\lambda$
+        \item $<$keyword$>::=$ TOKEN\_KEYWORD\_IF $|$ TOKEN\_KEYWORD\_ELSE $|$ TOKEN\_KEYWORD\_CONST $|$\\TOKEN\_KEYWORD\_FOR $|$\\TOKEN\_KEYWORD\_WHILE $|$\\TOKEN\_KEYWORD\_RETURN $|$ TOKEN\_KEYWORD\_STRUCT
         \framebreak
-        \item\textbf{fim de expressão}: ;
-        \item\textbf{início de bloco}: \{
-        \item\textbf{fim de bloco}: \}
-        \item\textbf{abre parenteses}: (
-        \item\textbf{fecha parenteses}: )
-        \item\textbf{inteiro literal}: \{{\small DIGIT}\}+
-        \item\textbf{float literal}: \{{\small INTEGER\_LITERAL}\}``.''\{{\small INTEGER\_LITERAL}\}
-        \item\textbf{string literal}: \textbackslash{}``[\^{}\textbackslash{}\textbackslash{}\textbackslash{}n\textbackslash{}'']+
-        \item\textbf{char literal}: \textbackslash{}`\textbackslash{}\textbackslash{}$?$.\textbackslash{}'
-        \item\textbf{identificador}: (\{{\small LETTER}\})(\{{\small ALPHA\_NUM}\}$|$\_)*
+        \item $<$literal$>::=$ TOKEN\_INTEGER\_LITERAL $|$ TOKEN\_FLOAT\_LITERAL $|$ TOKEN\_CHAR\_LITERAL $|$ TOKEN\_STRING\_LITERAL
+        \item conditional: value $|$ value TOKEN\_RELATIONAL\_OPERATOR value
     \end{itemize}
 \end{frame}
 

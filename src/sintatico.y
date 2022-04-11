@@ -4,6 +4,7 @@
 #include <stdbool.h> // tipo bool
 #include <assert.h> // assert macro
 #include <errno.h>
+#include "tree/tree.h"
 
 #include "log_info/logging.h"
 #include "utils/user_input.h"
@@ -17,6 +18,8 @@ extern int yylex();
 extern char* yytext;
 
 char buffer[256]; /// utilizado para armazenar temporariamente trechos de tokens
+treeNode sintax_tree[1000];
+int sintax_tree_size = 0;
 
 uint8_t is_open_block = 0; /// conta a quantidade de {}
 uint8_t is_open_expression = 0; /// conta a quantidade de ()
@@ -73,9 +76,9 @@ void exitFunction(void);
 %start programa
 
 %%
-programa: 
-    | TOKEN_PREPROCESSOR_COMMAND programa 
-    | definicao programa 
+programa: {LOGI("Achei programa");}
+    | TOKEN_PREPROCESSOR_COMMAND programa {LOGI("Achei preporcessador");}
+    | definition programa {LOGI("Achei definicao");}
     ;
 
 data_type:
@@ -86,47 +89,64 @@ data_type:
     ;
 
 keyword:
-    TOKEN_KEYWORD_IF
-    | TOKEN_KEYWORD_ELSE
-    | TOKEN_KEYWORD_FOR
-    | TOKEN_KEYWORD_WHILE
-    | TOKEN_KEYWORD_RETURN
-    | TOKEN_KEYWORD_CONST
-    | TOKEN_KEYWORD_STRUCT
+	TOKEN_KEYWORD_IF
+	| TOKEN_KEYWORD_ELSE
+	| TOKEN_KEYWORD_CONST
+	| TOKEN_KEYWORD_FOR
+	| TOKEN_KEYWORD_WHILE
+	| TOKEN_KEYWORD_RETURN
+	| TOKEN_KEYWORD_STRUCT
+	;
+
+literal:
+    TOKEN_INTEGER_LITERAL
+    | TOKEN_FLOAT_LITERAL
+    | TOKEN_CHAR_LITERAL
+    | TOKEN_STRING_LITERAL
     ;
 
-definicao:
-    function 
-    | variable 
+definition: data_type TOKEN_ID definition_variable_function
+    ;
+
+definition_variable_function:
+    variable
+    | function
+    ;
+
+complete_variable:
+    data_type TOKEN_ID variable
     ;
 
 variable:
-    TOKEN_DATA_TYPE_INT TOKEN_ID TOKEN_ASSIGNMENT TOKEN_INTEGER_LITERAL TOKEN_END_EXP
-    | TOKEN_DATA_TYPE_FLOAT TOKEN_ID TOKEN_ASSIGNMENT TOKEN_FLOAT_LITERAL TOKEN_END_EXP
-    | TOKEN_DATA_TYPE_CHAR TOKEN_ID TOKEN_ASSIGNMENT TOKEN_CHAR_LITERAL TOKEN_END_EXP
-    | data_type TOKEN_ID TOKEN_END_EXP
+    TOKEN_ASSIGNMENT literal TOKEN_END_EXP
+    | TOKEN_ARITHMETIC_OPERATOR TOKEN_END_EXP
+    | TOKEN_END_EXP
     ;
 
 function:
-    data_type TOKEN_ID TOKEN_PARENTESEIS_BEGIN TOKEN_PARENTESEIS_END TOKEN_END_EXP 
-    | data_type TOKEN_ID TOKEN_PARENTESEIS_BEGIN TOKEN_PARENTESEIS_END TOKEN_BLOCK_BEGIN exp TOKEN_BLOCK_END 
-    | error keyword
-    | error TOKEN_END_EXP
+    TOKEN_PARENTESEIS_BEGIN TOKEN_PARENTESEIS_END TOKEN_END_EXP 
+    | TOKEN_PARENTESEIS_BEGIN TOKEN_PARENTESEIS_END TOKEN_BLOCK_BEGIN exp TOKEN_BLOCK_END 
+    //| error keyword
+    //| error TOKEN_END_EXP
     ;
 
 exp:
-    variable {LOGI("Encontrei uma definição de variável");}
-    | ifel {LOGI("Encontrei um if else");}
+    | complete_variable exp
+    | ifel exp
+    | atribuition exp
+    | for exp
+    | while exp
     ;
 
-ifel:
-    TOKEN_KEYWORD_IF TOKEN_PARENTESEIS_BEGIN conditional TOKEN_PARENTESEIS_END TOKEN_BLOCK_BEGIN exp TOKEN_BLOCK_END
-    | TOKEN_KEYWORD_IF TOKEN_PARENTESEIS_BEGIN conditional TOKEN_PARENTESEIS_END TOKEN_BLOCK_BEGIN exp TOKEN_BLOCK_END TOKEN_KEYWORD_ELSE TOKEN_BLOCK_BEGIN exp TOKEN_BLOCK_END
+for:
+    TOKEN_KEYWORD_FOR TOKEN_PARENTESEIS_BEGIN atribuition TOKEN_END_EXP conditional TOKEN_END_EXP math_expression TOKEN_PARENTESEIS_END TOKEN_BLOCK_BEGIN exp TOKEN_BLOCK_END
+    | TOKEN_KEYWORD_FOR TOKEN_PARENTESEIS_BEGIN complete_variable TOKEN_END_EXP conditional TOKEN_END_EXP math_expression TOKEN_PARENTESEIS_END TOKEN_BLOCK_BEGIN exp TOKEN_BLOCK_END
     ;
 
-conditional:
-    value
-    | value TOKEN_RELATIONAL_OPERATOR value
+while:
+
+atribuition:
+    TOKEN_ID TOKEN_ASSIGNMENT math_expression TOKEN_END_EXP
     ;
 
 value:
@@ -134,6 +154,23 @@ value:
     | TOKEN_INTEGER_LITERAL
     | TOKEN_FLOAT_LITERAL
     ;
+
+math_expression:
+    | value
+    | TOKEN_PARENTESEIS_BEGIN math_expression TOKEN_PARENTESEIS_END math_expression
+    | math_expression TOKEN_ARITHMETIC_OPERATOR math_expression
+    ;
+
+ifel:
+    TOKEN_KEYWORD_IF TOKEN_PARENTESEIS_BEGIN conditional TOKEN_PARENTESEIS_END TOKEN_BLOCK_BEGIN exp TOKEN_BLOCK_END {LOGI("Encontrei um if");}
+    | TOKEN_KEYWORD_IF TOKEN_PARENTESEIS_BEGIN conditional TOKEN_PARENTESEIS_END TOKEN_BLOCK_BEGIN exp TOKEN_BLOCK_END TOKEN_KEYWORD_ELSE TOKEN_BLOCK_BEGIN exp TOKEN_BLOCK_END {LOGI("Encontrei um if else");}
+    ;
+
+conditional:
+    value
+    | value TOKEN_RELATIONAL_OPERATOR value
+    ;
+
 %%
 void yyerror(const char *s) {
     //lexicalPrint(LOG_TYPE_ERROR, SINTATIC_ANALYSIS, s);

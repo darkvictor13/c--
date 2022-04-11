@@ -17,7 +17,7 @@ char * getFilenameFromUser() {
 
 	if (tolower(user_input) == 'n') {
 		printf("Utilizando arquivo default: %s\n\n", default_value);
-		ret = malloc(sizeof(default_value));
+		ret = (char *)malloc(sizeof(default_value));
 		strcpy(ret, default_value);
 	}else {
 		printf("Caminho para o arquivo: ");
@@ -27,7 +27,7 @@ char * getFilenameFromUser() {
 		}
 		printf("Utilizando arquivo passado pelo usuário: %s\n\n", buffer);
 
-		ret = malloc(strlen(buffer) + 1);
+		ret = (char *)malloc(strlen(buffer) + 1);
 		strcpy(ret, buffer);
 	}
 
