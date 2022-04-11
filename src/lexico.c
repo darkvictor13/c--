@@ -1,6 +1,6 @@
-#line 2 "../src/main.c"
+#line 1 "../src/lexico.c"
 
-#line 4 "../src/main.c"
+#line 3 "../src/lexico.c"
 
 #define  YY_INT_ALIGNED short int
 
@@ -371,8 +371,8 @@ static void yynoreturn yy_fatal_error ( const char* msg  );
 	(yy_hold_char) = *yy_cp; \
 	*yy_cp = '\0'; \
 	(yy_c_buf_p) = yy_cp;
-#define YY_NUM_RULES 30
-#define YY_END_OF_BUFFER 31
+#define YY_NUM_RULES 39
+#define YY_END_OF_BUFFER 40
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
@@ -380,20 +380,22 @@ struct yy_trans_info
 	flex_int32_t yy_verify;
 	flex_int32_t yy_nxt;
 	};
-static const flex_int16_t yy_accept[105] =
+static const flex_int16_t yy_accept[130] =
     {   0,
-        0,    0,    2,    2,    0,    0,    0,    0,   31,   29,
-        7,    7,   13,   24,    8,   29,   29,   29,   17,   18,
-       12,   12,   12,   12,   19,   14,   13,   11,   13,   28,
-       29,   28,   28,   28,   28,   28,   28,   28,   15,   29,
-       16,    2,    2,   30,    3,   27,   26,   25,   23,   22,
-        7,   13,    8,   11,   21,   21,   12,   12,    1,    6,
-        0,   19,    0,   13,   28,    0,   28,   28,   28,   28,
-       28,   28,    9,   28,   28,   28,   28,    2,    3,    3,
-        5,   27,    6,   20,   28,   28,   28,   28,   28,   10,
-       28,   28,   28,   28,   28,   28,   28,   28,   28,   28,
+        0,    0,    2,    2,    0,    0,    0,    0,   40,   38,
+        7,    7,   22,   33,    8,   38,   38,   38,   26,   27,
+       21,   21,   21,   21,   28,   23,   22,   20,   22,   37,
+       38,   37,   37,   37,   37,   37,   37,   37,   37,   37,
+       37,   24,   38,   25,    2,    2,   39,    3,   36,   35,
+       34,   32,   31,    7,   22,    8,   20,   30,   30,   21,
+       21,    1,    6,    0,   28,    0,   22,   37,    0,   37,
+       37,   37,   37,   37,   37,    9,   37,   37,   37,   37,
+       37,   37,   37,    2,    3,    3,    5,   36,    6,   29,
+       37,   37,   37,   37,   37,   14,   16,   37,   37,   37,
 
-       28,   28,   12,    0
+       37,   37,   18,   37,   37,   10,   37,   37,   37,   37,
+       37,   37,   37,   37,   19,   37,   11,   37,   17,   37,
+       37,   37,   37,   15,   16,   12,   21,   13,    0
     } ;
 
 static const YY_CHAR yy_ec[256] =
@@ -402,16 +404,16 @@ static const YY_CHAR yy_ec[256] =
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    2,    4,    5,    6,    1,    7,    8,    9,   10,
-       11,   12,   13,    1,   14,   15,   16,   17,   17,   17,
-       17,   17,   17,   17,   17,   17,   17,    1,   18,   19,
-       20,   21,    1,    1,   22,   22,   22,   22,   22,   22,
-       22,   22,   22,   22,   22,   22,   22,   22,   22,   22,
-       22,   22,   22,   22,   22,   22,   22,   22,   22,   22,
-       23,   24,   25,   26,   27,    1,   28,   29,   30,   31,
+       11,   12,   13,    1,   14,   15,   16,   17,   18,   19,
+       20,   21,   17,   22,   17,   23,   17,    1,   24,   25,
+       26,   27,    1,    1,   28,   28,   28,   28,   28,   28,
+       28,   28,   28,   28,   28,   28,   28,   28,   28,   28,
+       28,   28,   28,   28,   28,   28,   28,   28,   28,   28,
+       29,   30,   31,   32,   33,    1,   34,   35,   36,   37,
 
-       32,   33,   22,   34,   35,   22,   22,   36,   22,   37,
-       38,   22,   22,   39,   40,   41,   42,   22,   43,   22,
-       22,   44,   45,   46,   47,    1,    1,    1,    1,    1,
+       38,   39,   28,   40,   41,   28,   28,   42,   28,   43,
+       44,   28,   28,   45,   46,   47,   48,   49,   50,   28,
+       28,   51,   52,   53,   54,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
@@ -428,116 +430,138 @@ static const YY_CHAR yy_ec[256] =
         1,    1,    1,    1,    1
     } ;
 
-static const YY_CHAR yy_meta[48] =
+static const YY_CHAR yy_meta[55] =
     {   0,
         1,    1,    2,    1,    3,    1,    1,    1,    1,    4,
-        4,    4,    1,    1,    1,    1,    5,    1,    1,    1,
-        1,    5,    1,    6,    1,    1,    5,    5,    5,    5,
+        4,    4,    1,    1,    1,    1,    5,    5,    5,    5,
+        5,    5,    5,    1,    1,    1,    1,    5,    1,    6,
+        1,    1,    5,    5,    5,    5,    5,    5,    5,    5,
         5,    5,    5,    5,    5,    5,    5,    5,    5,    5,
-        5,    5,    5,    5,    1,    4,    1
+        5,    1,    4,    1
     } ;
 
-static const flex_int16_t yy_base[115] =
+static const flex_int16_t yy_base[140] =
     {   0,
-        0,    0,   45,   48,   49,   58,   59,   61,  196,  197,
-       63,   69,  175,  197,    0,  174,   59,  169,  197,  197,
-      172,   56,   60,   65,   69,  197,   68,  171,   69,    0,
-      173,   58,  151,  152,   57,   64,   63,  153,  197,   29,
-      197,    0,    0,  197,   87,    0,  197,  197,  197,  197,
-      103,  197,    0,  197,  197,    0,  197,  197,  197,    0,
-      169,   85,  165,  197,    0,   90,  156,  146,  140,  141,
-      142,  140,    0,  137,  133,  137,  140,    0,   96,   97,
-      197,    0,    0,  157,  134,  132,  142,  138,  141,    0,
-      132,  118,  123,  112,  113,  107,  103,  105,   82,   79,
+        0,    0,   52,   55,   56,   65,   66,   68,  258,  259,
+       70,   76,  231,  259,    0,  230,   48,  225,  259,  259,
+      228,   63,   66,   71,   81,  259,   56,  227,   58,    0,
+       92,   50,  208,  209,   49,   77,  212,   76,  208,  204,
+      207,  259,   80,  259,    0,    0,  259,  106,    0,  259,
+      259,  259,  259,  122,  259,    0,  259,  259,    0,  259,
+      259,  259,    0,  109,  119,  220,  259,    0,  126,  211,
+      201,  195,  196,  197,  195,    0,  192,  191,  186,  191,
+      192,  193,  192,    0,  138,  139,  259,    0,    0,  141,
+      187,  185,  195,  191,  194,    0,  147,  179,  188,  177,
 
-       77,   42,    0,  197,  115,  121,  127,  133,  139,   73,
-      145,  151,  157,  162
+      187,  177,    0,  168,  172,    0,  161,  182,  184,  175,
+      157,  123,  122,  120,    0,  115,    0,  114,    0,   88,
+       78,   80,   60,    0,    0,    0,    0,    0,  259,  170,
+      176,  182,  188,  194,   83,  200,  206,  212,  217
     } ;
 
-static const flex_int16_t yy_def[115] =
+static const flex_int16_t yy_def[140] =
     {   0,
-      104,    1,  105,  105,  106,  106,  107,  107,  104,  104,
-      104,  104,  104,  104,  108,  104,  104,  109,  104,  104,
-      104,  104,  104,  104,  104,  104,  104,  104,  104,  110,
-      104,  110,  110,  110,  110,  110,  110,  110,  104,  104,
-      104,  111,  111,  104,  112,  113,  104,  104,  104,  104,
-      104,  104,  108,  104,  104,  109,  104,  104,  104,  114,
-      104,  104,  104,  104,  110,  104,  110,  110,  110,  110,
-      110,  110,  110,  110,  110,  110,  110,  111,  112,  112,
-      104,  113,  114,  104,  110,  110,  110,  110,  110,  110,
-      110,  110,  110,  110,  110,  110,  110,  110,  110,  110,
+      129,    1,  130,  130,  131,  131,  132,  132,  129,  129,
+      129,  129,  129,  129,  133,  129,  129,  134,  129,  129,
+      129,  129,  129,  129,  129,  129,  129,  129,  129,  135,
+      129,  135,  135,  135,  135,  135,  135,  135,  135,  135,
+      135,  129,  129,  129,  136,  136,  129,  137,  138,  129,
+      129,  129,  129,  129,  129,  133,  129,  129,  134,  129,
+      129,  129,  139,  129,  129,  129,  129,  135,  129,  135,
+      135,  135,  135,  135,  135,  135,  135,  135,  135,  135,
+      135,  135,  135,  136,  137,  137,  129,  138,  139,  129,
+      135,  135,  135,  135,  135,  135,  135,  135,  135,  135,
 
-      110,  110,  110,    0,  104,  104,  104,  104,  104,  104,
-      104,  104,  104,  104
+      135,  135,  135,  135,  135,  135,  135,  135,  135,  135,
+      135,  135,  135,  135,  135,  135,  135,  135,  135,  135,
+      135,  135,  135,  135,  135,  135,  135,  135,    0,  129,
+      129,  129,  129,  129,  129,  129,  129,  129,  129
     } ;
 
-static const flex_int16_t yy_nxt[245] =
+static const flex_int16_t yy_nxt[314] =
     {   0,
        10,   11,   12,   13,   14,   15,   16,   17,   18,   19,
-       20,   21,   22,   23,   10,   24,   25,   26,   27,   28,
-       29,   30,   31,   10,   10,   16,   10,   30,   30,   32,
-       33,   34,   35,   30,   36,   30,   30,   30,   30,   37,
-       30,   30,   38,   30,   39,   40,   41,   43,   54,   44,
-       43,   47,   44,   48,   44,   44,   45,   44,   44,   45,
-       47,   44,   48,   44,   51,   51,   52,   50,   57,   50,
-       51,   51,   44,   58,   52,   54,   59,   65,   54,   54,
-       60,   44,   73,   61,   54,   62,   63,   64,   64,   63,
-       44,   67,   71,   44,   72,   68,   73,   75,   80,   61,
+       20,   21,   22,   23,   10,   24,   25,   25,   25,   25,
+       25,   25,   25,   26,   27,   28,   29,   30,   31,   10,
+       10,   16,   10,   30,   30,   32,   33,   34,   35,   30,
+       36,   30,   30,   30,   37,   38,   30,   39,   40,   41,
+       30,   42,   43,   44,   46,   55,   47,   46,   50,   47,
+       51,   47,   47,   48,   47,   47,   48,   50,   47,   51,
+       47,   54,   54,   57,   53,   60,   53,   54,   54,   61,
+       66,   67,   62,   67,   66,   47,   63,   68,   57,   70,
+       74,   57,   75,   71,   47,   64,   57,   65,   65,   65,
 
-       74,   62,   81,   76,   51,   51,   66,  104,   80,  103,
-       90,  104,   81,   73,   57,   42,   42,   42,   42,   42,
-       42,   46,   46,   46,   46,   46,   46,   49,   49,   49,
-       49,   49,   49,   53,  102,   53,   53,   53,   53,   55,
-      101,   55,   55,   55,   55,   78,   78,   90,  100,   78,
-       78,   79,   73,   79,   79,   79,   79,   82,   99,   98,
-       82,   82,   83,   97,   83,   83,   83,   83,   96,   73,
-       95,   94,   90,   84,   93,   92,   91,   90,   73,   89,
-       88,   87,   86,   85,   54,   84,   77,   70,   69,   66,
-       52,   54,   56,   54,   52,  104,    9,  104,  104,  104,
+       65,   65,   65,   65,   47,   57,  128,   47,   69,   69,
+       69,   69,   69,   69,   69,   76,   79,   86,  127,   77,
+      126,   87,   80,   54,   54,   90,   90,   90,   90,   90,
+       90,   90,   55,   64,  125,   65,   65,   65,   65,   65,
+       65,   65,   69,   69,   69,   69,   69,   69,   69,  129,
+       86,  119,  124,  129,   87,  123,   60,   90,   90,   90,
+       90,   90,   90,   90,  108,  122,  109,  121,  110,  111,
+       45,   45,   45,   45,   45,   45,   49,   49,   49,   49,
+       49,   49,   52,   52,   52,   52,   52,   52,   56,  120,
+       56,   56,   56,   56,   58,  111,   58,   58,   58,   58,
 
-      104,  104,  104,  104,  104,  104,  104,  104,  104,  104,
-      104,  104,  104,  104,  104,  104,  104,  104,  104,  104,
-      104,  104,  104,  104,  104,  104,  104,  104,  104,  104,
-      104,  104,  104,  104,  104,  104,  104,  104,  104,  104,
-      104,  104,  104,  104
+       84,   84,  111,  111,   84,   84,   85,  119,   85,   85,
+       85,   85,   88,  118,  117,   88,   88,   89,  116,   89,
+       89,   89,   89,  115,  114,  113,  112,  107,  106,  105,
+      104,  103,  102,  101,   77,  100,   99,   98,   97,   96,
+       95,   94,   93,   92,   91,   57,   83,   82,   81,   78,
+       73,   72,   55,   57,   59,   57,   55,  129,    9,  129,
+      129,  129,  129,  129,  129,  129,  129,  129,  129,  129,
+      129,  129,  129,  129,  129,  129,  129,  129,  129,  129,
+      129,  129,  129,  129,  129,  129,  129,  129,  129,  129,
+      129,  129,  129,  129,  129,  129,  129,  129,  129,  129,
+
+      129,  129,  129,  129,  129,  129,  129,  129,  129,  129,
+      129,  129,  129
     } ;
 
-static const flex_int16_t yy_chk[245] =
+static const flex_int16_t yy_chk[314] =
     {   0,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    3,   40,    3,
-        4,    5,    4,    5,    3,    3,    3,    4,    4,    4,
-        6,    7,    6,    8,   11,   11,   17,    7,   22,    8,
-       12,   12,    5,   23,   40,   22,   24,  110,   17,   23,
-       24,    6,  102,   25,   24,   25,   27,   27,   29,   29,
-        3,   32,   35,    4,   35,   32,   36,   37,   45,   62,
+        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    1,    1,    3,   17,    3,    4,    5,    4,
+        5,    3,    3,    3,    4,    4,    4,    6,    7,    6,
+        8,   11,   11,   17,    7,   22,    8,   12,   12,   23,
+       27,   27,   24,   29,   29,    5,   24,  135,   22,   32,
+       35,   23,   35,   32,    6,   25,   24,   25,   25,   25,
 
-       36,   62,   45,   37,   51,   51,   66,   79,   80,  101,
-      100,   79,   80,   99,   66,  105,  105,  105,  105,  105,
-      105,  106,  106,  106,  106,  106,  106,  107,  107,  107,
-      107,  107,  107,  108,   98,  108,  108,  108,  108,  109,
-       97,  109,  109,  109,  109,  111,  111,   96,   95,  111,
-      111,  112,   94,  112,  112,  112,  112,  113,   93,   92,
-      113,  113,  114,   91,  114,  114,  114,  114,   89,   88,
-       87,   86,   85,   84,   77,   76,   75,   74,   72,   71,
-       70,   69,   68,   67,   63,   61,   38,   34,   33,   31,
-       28,   21,   18,   16,   13,    9,  104,  104,  104,  104,
+       25,   25,   25,   25,    3,   43,  123,    4,   31,   31,
+       31,   31,   31,   31,   31,   36,   38,   48,  122,   36,
+      121,   48,   38,   54,   54,   64,   64,   64,   64,   64,
+       64,   64,   43,   65,  120,   65,   65,   65,   65,   65,
+       65,   65,   69,   69,   69,   69,   69,   69,   69,   85,
+       86,  118,  116,   85,   86,  114,   69,   90,   90,   90,
+       90,   90,   90,   90,   97,  113,   97,  112,   97,   97,
+      130,  130,  130,  130,  130,  130,  131,  131,  131,  131,
+      131,  131,  132,  132,  132,  132,  132,  132,  133,  111,
+      133,  133,  133,  133,  134,  110,  134,  134,  134,  134,
 
-      104,  104,  104,  104,  104,  104,  104,  104,  104,  104,
-      104,  104,  104,  104,  104,  104,  104,  104,  104,  104,
-      104,  104,  104,  104,  104,  104,  104,  104,  104,  104,
-      104,  104,  104,  104,  104,  104,  104,  104,  104,  104,
-      104,  104,  104,  104
+      136,  136,  109,  108,  136,  136,  137,  107,  137,  137,
+      137,  137,  138,  105,  104,  138,  138,  139,  102,  139,
+      139,  139,  139,  101,  100,   99,   98,   95,   94,   93,
+       92,   91,   83,   82,   81,   80,   79,   78,   77,   75,
+       74,   73,   72,   71,   70,   66,   41,   40,   39,   37,
+       34,   33,   28,   21,   18,   16,   13,    9,  129,  129,
+      129,  129,  129,  129,  129,  129,  129,  129,  129,  129,
+      129,  129,  129,  129,  129,  129,  129,  129,  129,  129,
+      129,  129,  129,  129,  129,  129,  129,  129,  129,  129,
+      129,  129,  129,  129,  129,  129,  129,  129,  129,  129,
+
+      129,  129,  129,  129,  129,  129,  129,  129,  129,  129,
+      129,  129,  129
     } ;
 
 /* Table of booleans, true if rule could match eol. */
-static const flex_int32_t yy_rule_can_match_eol[31] =
+static const flex_int32_t yy_rule_can_match_eol[40] =
     {   0,
 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-    0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,     };
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 
+        };
 
 static yy_state_type yy_last_accepting_state;
 static char *yy_last_accepting_cpos;
@@ -553,54 +577,41 @@ int yy_flex_debug = 0;
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
-#line 1 "../src/cmm.lex"
+#line 1 "../src/lexico.lex"
 /**
-    Arquivo de definição da linguagem C--, Um subconjunto da linguagem C
+  Arquivo de definição da linguagem C--, Um subconjunto da linguagem C
 
-    Escrito em lex/flex esse arquivo tem como objetivo definir
-    os tokens da linguagem, bem como as ações tomadas quando os mesmos são
-    encontrados em um arquivo fonte. Sendo assim realizando a análise léxica.
+  Escrito em lex/flex esse arquivo tem como objetivo definir
+  os tokens da linguagem, bem como as ações tomadas quando os mesmos são
+  encontrados em um arquivo fonte. Sendo assim realizando a análise léxica.
 
-    Documentação utilizada para gerar arquivo:
-        - https://ftp.gnu.org/old-gnu/Manuals/flex-2.5.4/html_mono/flex.html
+  Documentação utilizada para gerar arquivo:
+  - https://ftp.gnu.org/old-gnu/Manuals/flex-2.5.4/html_mono/flex.html
 */
 /* Opções para o flex */
 /* Armazena em yylineno qual linha do arquivo está sendo lida */
 /* Código c colocado no escopo global do programa */
-#line 18 "../src/cmm.lex"
-#include <stdlib.h> // exit, EXIT_FAILURE
-#include <stdbool.h> // tipo bool
-#include <assert.h> // assert macro
+#line 18 "../src/lexico.lex"
+    #include <stdlib.h> // exit, EXIT_FAILURE
+    #include <stdbool.h> // tipo bool
+    #include <assert.h> // assert macro
+    #include <errno.h>
 
-#include "headers/token_definitions.h"
-#include "log_info/logging.h"
-#include "utils/user_input.h"
-#include "utils/utils.h"
+    #include "sintatico.tab.h"
 
-char buffer[256]; /// utilizado para armazenar temporariamente trechos de tokens
+    #include "log_info/logging.h"
+    #include "utils/user_input.h"
+    #include "utils/utils.h"
 
-uint8_t is_open_block = 0; /// conta a quantidade de {}
-uint8_t is_open_expression = 0; /// conta a quantidade de ()
+    extern char buffer[256];
 
-bool have_error = false; /// guarda se houve algum erro durante a execução do processo
+    extern uint8_t is_open_block;
+    extern uint8_t is_open_expression;
+    extern bool have_error;
 
-/**
- * @brief Últimas verificações léxicas após terminado o input de tokens
- *
- * @pre leitura de tokens encerrada
- * @post deixa a variável global have_error em seu estado final
- */
-void lastVerify(const char * filename);
-/**
- * @brief Função chamada ao encerrar o programa,
- * informando o usuário e realizando as limpezas necessárias
- *
- * Deve ser passada para função atexit
- * @pre leitura de tokens encerrada
- * @post deixa a variável global have_error em seu estado final
- */
-void exitFunction(void);
-#line 604 "../src/main.c"
+    #define LOGI(...) cmmLog (LOG_TYPE_INFO, LEXICAL_ANALYSIS, __VA_ARGS__)
+    #define LOGE(...) cmmLog (LOG_TYPE_ERROR, LEXICAL_ANALYSIS, __VA_ARGS__)
+#line 614 "../src/lexico.c"
 
 /* ---------- */
 /* Definições */
@@ -634,7 +645,7 @@ void exitFunction(void);
 /* Token que aceita strings literais, utilizado em Start conditions*/
 /* Token que aceita valores de caracteres literais, utilizado em Start conditions*/
 /* Token que aceita identificadores da linguagem (nomes de funções, variáveis) */
-#line 638 "../src/main.c"
+#line 648 "../src/lexico.c"
 
 #define INITIAL 0
 #define comment 1
@@ -854,9 +865,9 @@ YY_DECL
 		}
 
 	{
-#line 116 "../src/cmm.lex"
+#line 112 "../src/lexico.lex"
 
-#line 118 "../src/cmm.lex"
+#line 114 "../src/lexico.lex"
  /*
     Nessa parte define-se as ações a serem tomadas
     quando encontrar uma das classes de tokens previamente
@@ -864,7 +875,7 @@ YY_DECL
  */
 
  /* Elimina comentários de múltiplas linhas */
-#line 868 "../src/main.c"
+#line 878 "../src/lexico.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -891,13 +902,13 @@ yy_match:
 			while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 				{
 				yy_current_state = (int) yy_def[yy_current_state];
-				if ( yy_current_state >= 105 )
+				if ( yy_current_state >= 130 )
 					yy_c = yy_meta[yy_c];
 				}
 			yy_current_state = yy_nxt[yy_base[yy_current_state] + yy_c];
 			++yy_cp;
 			}
-		while ( yy_base[yy_current_state] != 197 );
+		while ( yy_base[yy_current_state] != 259 );
 
 yy_find_action:
 		yy_act = yy_accept[yy_current_state];
@@ -933,224 +944,320 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 125 "../src/cmm.lex"
+#line 121 "../src/lexico.lex"
 BEGIN(comment);
 	YY_BREAK
 case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
-#line 126 "../src/cmm.lex"
+#line 122 "../src/lexico.lex"
 
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 127 "../src/cmm.lex"
+#line 123 "../src/lexico.lex"
 
 	YY_BREAK
 case 4:
 /* rule 4 can match eol */
 YY_RULE_SETUP
-#line 128 "../src/cmm.lex"
+#line 124 "../src/lexico.lex"
 
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 129 "../src/cmm.lex"
+#line 125 "../src/lexico.lex"
 BEGIN(INITIAL);
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 131 "../src/cmm.lex"
+#line 127 "../src/lexico.lex"
 /* elimina resto da linha do cometário */
 	YY_BREAK
 case 7:
 /* rule 7 can match eol */
 YY_RULE_SETUP
-#line 133 "../src/cmm.lex"
-/* Elimina espaços em branco e \n */
+#line 129 "../src/lexico.lex"
+
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 135 "../src/cmm.lex"
+#line 131 "../src/lexico.lex"
 {
-    doLog (
-        LOG_TYPE_INFO,
+    LOGI (
         "Comando para o preprocessador [%s]",
         yytext
     );
+	return TOKEN_PREPROCESSOR_COMMAND;
 }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 143 "../src/cmm.lex"
+#line 139 "../src/lexico.lex"
 {
-    doLog (
-        LOG_TYPE_INFO,
+    LOGI (
         "Palavra reservada [%s]",
         yytext
     );
+	return TOKEN_KEYWORD_IF;
 }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 151 "../src/cmm.lex"
+#line 147 "../src/lexico.lex"
 {
-    doLog (
-        LOG_TYPE_INFO,
-        "Tipo de dado encontrado [%s]",
+    LOGI (
+        "Palavra reservada [%s]",
         yytext
     );
+	return TOKEN_KEYWORD_ELSE;
 }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 159 "../src/cmm.lex"
+#line 155 "../src/lexico.lex"
 {
-    doLog (
-        LOG_TYPE_INFO,
-        "Expressão de atribuição [%s] encontrada",
+    LOGI (
+        "Palavra reservada [%s]",
         yytext
     );
+	return TOKEN_KEYWORD_CONST;
 }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 167 "../src/cmm.lex"
+#line 163 "../src/lexico.lex"
 {
-    doLog (
-        LOG_TYPE_INFO,
-        "Operador aritmético [%s] encontrado",
+    LOGI (
+        "Palavra reservada [%s]",
         yytext
     );
+	return TOKEN_KEYWORD_RETURN;
 }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 175 "../src/cmm.lex"
+#line 171 "../src/lexico.lex"
 {
-    doLog (
-        LOG_TYPE_INFO,
-        "Operador relacional [%s] encontrado",
+    LOGI (
+        "Palavra reservada [%s]",
         yytext
     );
+	return TOKEN_KEYWORD_STRUCT;
 }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 183 "../src/cmm.lex"
+#line 179 "../src/lexico.lex"
 {
-    doLog (
-        LOG_TYPE_INFO,
-        "Caractere de fim de expressão [;] encontrado"
+    LOGI (
+        "Palavra reservada [%s]",
+        yytext
     );
+	return TOKEN_KEYWORD_FOR;
 }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 190 "../src/cmm.lex"
+#line 187 "../src/lexico.lex"
 {
-    doLog (
-        LOG_TYPE_INFO,
-        "Caractere de início de escopo [{] encontrado"
+    LOGI (
+        "Palavra reservada [%s]",
+        yytext
     );
-    is_open_block++;
+	return TOKEN_KEYWORD_WHILE;
 }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 198 "../src/cmm.lex"
+#line 195 "../src/lexico.lex"
 {
-    if (is_open_block) {
-        doLog (
-            LOG_TYPE_INFO,
-            "Caractere de fim de escopo [}] encontrado"
-        );
-    }else {
-        doLog (
-            LOG_TYPE_ERROR,
-            "Caractere de fim de expressão [}] encontrado, sem correspondente [{]"
-        );
-    }
-    is_open_block--;
+    LOGI (
+        "Tipo de dado inteiro encontrado [%s]",
+        yytext
+    );
+	return TOKEN_DATA_TYPE_INT;
 }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 213 "../src/cmm.lex"
+#line 203 "../src/lexico.lex"
 {
-    doLog (
-        LOG_TYPE_INFO,
-        "Caractere de início de expressão [(] encontrado"
+    LOGI (
+        "Tipo de dado ponto flutuante encontrado [%s]",
+        yytext
     );
-    is_open_expression++;
+	return TOKEN_DATA_TYPE_FLOAT;
 }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 221 "../src/cmm.lex"
+#line 211 "../src/lexico.lex"
 {
-    if (is_open_expression) {
-        doLog (
-            LOG_TYPE_INFO,
-            "Caractere de fim de expressão [)] encontrado"
-        );
-    }else {
-        doLog (
-            LOG_TYPE_ERROR,
-            "Caractere de fim de expressão [)] encontrado, sem correspondente [(]"
-        );
-    }
-    is_open_expression--;
+    LOGI (
+        "Tipo de caractere encontrado [%s]",
+        yytext
+    );
+	return TOKEN_DATA_TYPE_CHAR;
 }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 236 "../src/cmm.lex"
+#line 219 "../src/lexico.lex"
 {
-    doLog (
-        LOG_TYPE_INFO,
-        "Valor inteiro [%s] encontrado",
+    LOGI (
+        "Tipo de caractere encontrado [%s]",
         yytext
     );
+	return TOKEN_DATA_TYPE_VOID;
 }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 244 "../src/cmm.lex"
+#line 227 "../src/lexico.lex"
 {
-    doLog (
-        LOG_TYPE_INFO,
-        "Valor ponto flutuante [%s] encontrado",
+    LOGI (
+        "Expressão de atribuição [%s] encontrada",
         yytext
     );
+	return TOKEN_ASSIGNMENT;
 }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 252 "../src/cmm.lex"
+#line 235 "../src/lexico.lex"
+{
+    LOGI (
+        "Operador aritmético [%s] encontrado",
+        yytext
+    );
+	return TOKEN_ARITHMETIC_OPERATOR;
+}
+	YY_BREAK
+case 22:
+YY_RULE_SETUP
+#line 243 "../src/lexico.lex"
+{
+    LOGI (
+        "Operador relacional [%s] encontrado",
+        yytext
+    );
+	return TOKEN_RELATIONAL_OPERATOR;
+}
+	YY_BREAK
+case 23:
+YY_RULE_SETUP
+#line 251 "../src/lexico.lex"
+{
+    LOGI (
+        "Caractere de fim de expressão [;] encontrado"
+    );
+	return TOKEN_END_EXP;
+}
+	YY_BREAK
+case 24:
+YY_RULE_SETUP
+#line 258 "../src/lexico.lex"
+{
+    LOGI (
+        "Caractere de início de escopo [{] encontrado"
+    );
+    is_open_block++;
+    return TOKEN_BLOCK_BEGIN;
+}
+	YY_BREAK
+case 25:
+YY_RULE_SETUP
+#line 266 "../src/lexico.lex"
+{
+    if (is_open_block) {
+        LOGI (
+            "Caractere de fim de escopo [}] encontrado"
+        );
+    }else {
+        LOGE (
+            "Caractere de fim de expressão [}] encontrado, sem correspondente [{]"
+        );
+    }
+    is_open_block--;
+	return TOKEN_BLOCK_END;
+}
+	YY_BREAK
+case 26:
+YY_RULE_SETUP
+#line 280 "../src/lexico.lex"
+{
+    LOGI (
+        "Caractere de início de expressão [(] encontrado"
+    );
+    is_open_expression++;
+	return TOKEN_PARENTESEIS_BEGIN;
+}
+	YY_BREAK
+case 27:
+YY_RULE_SETUP
+#line 288 "../src/lexico.lex"
+{
+    if (is_open_expression) {
+        LOGI (
+            "Caractere de fim de expressão [)] encontrado"
+        );
+    }else {
+        LOGE (
+            "Caractere de fim de expressão [)] encontrado, sem correspondente [(]"
+        );
+    }
+    is_open_expression--;
+	return TOKEN_PARENTESEIS_END;
+}
+	YY_BREAK
+case 28:
+YY_RULE_SETUP
+#line 302 "../src/lexico.lex"
+{
+    LOGI (
+        "Valor inteiro [%s] encontrado",
+        yytext
+    );
+	return TOKEN_INTEGER_LITERAL;
+}
+	YY_BREAK
+case 29:
+YY_RULE_SETUP
+#line 310 "../src/lexico.lex"
+{
+    LOGI (
+        "Valor ponto flutuante [%s] encontrado",
+        yytext
+    );
+	return TOKEN_FLOAT_LITERAL;
+}
+	YY_BREAK
+case 30:
+YY_RULE_SETUP
+#line 318 "../src/lexico.lex"
 {
     _strncpy(buffer, yytext + 1, yyleng - 1);
     BEGIN(char_literal);
 }
 	YY_BREAK
-case 22:
+case 31:
 YY_RULE_SETUP
-#line 256 "../src/cmm.lex"
+#line 322 "../src/lexico.lex"
 {
-    doLog (
-        LOG_TYPE_INFO,
+    LOGI (
         "Caractere [%s] encontrado",
         buffer
     );
     BEGIN(INITIAL);
+	return TOKEN_CHAR_LITERAL;
 }
 	YY_BREAK
-case 23:
+case 32:
 YY_RULE_SETUP
-#line 265 "../src/cmm.lex"
+#line 331 "../src/lexico.lex"
 {
-    doLog (
-        LOG_TYPE_ERROR,
+    LOGE (
         "char literal mal formado [%s]",
         buffer
     );
@@ -1158,72 +1265,70 @@ YY_RULE_SETUP
     yyless(1); // devolve para o input o caractere lido
 }
 	YY_BREAK
-case 24:
+case 33:
 YY_RULE_SETUP
-#line 275 "../src/cmm.lex"
+#line 340 "../src/lexico.lex"
 BEGIN(string_literal);
 	YY_BREAK
-case 25:
+case 34:
 YY_RULE_SETUP
-#line 276 "../src/cmm.lex"
+#line 341 "../src/lexico.lex"
 {
-    doLog (
-        LOG_TYPE_INFO,
+    LOGI (
         "String literal [%s] encontrado",
         buffer
     );
     BEGIN(INITIAL);
+	return TOKEN_STRING_LITERAL;
 }
 	YY_BREAK
-case 26:
-/* rule 26 can match eol */
+case 35:
+/* rule 35 can match eol */
 YY_RULE_SETUP
-#line 285 "../src/cmm.lex"
+#line 350 "../src/lexico.lex"
 {
-    doLog (
-        LOG_TYPE_ERROR,
+    LOGE (
         "String literal mal formada [%s]",
         buffer
     );
     BEGIN(INITIAL);
 }
 	YY_BREAK
-case 27:
+case 36:
 YY_RULE_SETUP
-#line 294 "../src/cmm.lex"
+#line 358 "../src/lexico.lex"
 {
     _strncpy(buffer, yytext, yyleng);
 }
 	YY_BREAK
-case 28:
+case 37:
 YY_RULE_SETUP
-#line 298 "../src/cmm.lex"
+#line 362 "../src/lexico.lex"
 {
-    doLog (
-        LOG_TYPE_INFO,
+    LOGI (
         "Identificador [%s] encontrado",
         yytext
     );
+	return TOKEN_ID;
 }
 	YY_BREAK
 /* Qualquer caractere que não foi definido antes deve lançar um erro */
-case 29:
+case 38:
 YY_RULE_SETUP
-#line 307 "../src/cmm.lex"
+#line 371 "../src/lexico.lex"
 {
-    doLog (
-        LOG_TYPE_ERROR,
+    LOGE (
         "Caractere [%c] não reconhecido pela linguagem,",
         yytext[0]
     );
 }
 	YY_BREAK
-case 30:
+case 39:
 YY_RULE_SETUP
-#line 315 "../src/cmm.lex"
+#line 378 "../src/lexico.lex"
 ECHO;
 	YY_BREAK
-#line 1227 "../src/main.c"
+#line 1331 "../src/lexico.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(comment):
 case YY_STATE_EOF(string_literal):
@@ -1523,7 +1628,7 @@ static int yy_get_next_buffer (void)
 		while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 			{
 			yy_current_state = (int) yy_def[yy_current_state];
-			if ( yy_current_state >= 105 )
+			if ( yy_current_state >= 130 )
 				yy_c = yy_meta[yy_c];
 			}
 		yy_current_state = yy_nxt[yy_base[yy_current_state] + yy_c];
@@ -1551,11 +1656,11 @@ static int yy_get_next_buffer (void)
 	while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 		{
 		yy_current_state = (int) yy_def[yy_current_state];
-		if ( yy_current_state >= 105 )
+		if ( yy_current_state >= 130 )
 			yy_c = yy_meta[yy_c];
 		}
 	yy_current_state = yy_nxt[yy_base[yy_current_state] + yy_c];
-	yy_is_jam = (yy_current_state == 104);
+	yy_is_jam = (yy_current_state == 129);
 
 		return yy_is_jam ? 0 : yy_current_state;
 }
@@ -2243,53 +2348,10 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 315 "../src/cmm.lex"
+#line 378 "../src/lexico.lex"
 
 /*
     Aqui temos mais definições C
     para serem colocadas no final do arquivo main.c
 */
 
-void lastVerify(const char * filename) {
-    if (is_open_block) {
-        doLog(LOG_TYPE_ERROR, "Fim de arquivo antes de fechar o escopo {...");
-    }
-    if (is_open_expression > 0) {
-        doLog(LOG_TYPE_ERROR, "Fim de arquivo antes de fechar a expressão (...");
-    }
-    printf (
-        "\n%s ao executar a análise léxica no arquivo [%s]\n",
-        have_error? "Falha" : "Sucesso",
-        filename
-    );
-}
-
-void exitFunction(void) {
-    // não foi usado printf devido a possíveis falhas
-	puts("Encerrando o compilador c--");
-}
-
-/// função main copiada para o main.c
-int main(int argc, char * const argv[]) {
-    // garante que o usuário passou 0 ou 1 argumentos
-    assert(0 < argc && argc < 3);
-    // configura função chamada ao sair do programa
-    atexit(exitFunction);
-
-    char *filename; /// caminho para o arquivo a ser analisado
-    if (argc == 2) {
-        filename = argv[1];
-    }else {
-        filename = getFilenameFromUser();
-    }
-    FILE *file_ptr = fopen(filename, "r");
-	if (file_ptr == NULL) {
-		printf("Falha ao abrir o arquivo de entrada\n");
-		return EXIT_FAILURE;
-	}
-	yyin = file_ptr;
-
-    yylex();
-    lastVerify(filename);
-    return (have_error? EXIT_FAILURE : EXIT_SUCCESS);
-}

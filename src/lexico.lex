@@ -1,12 +1,12 @@
 /**
-    Arquivo de definição da linguagem C--, Um subconjunto da linguagem C
+  Arquivo de definição da linguagem C--, Um subconjunto da linguagem C
 
-    Escrito em lex/flex esse arquivo tem como objetivo definir
-    os tokens da linguagem, bem como as ações tomadas quando os mesmos são
-    encontrados em um arquivo fonte. Sendo assim realizando a análise léxica.
+  Escrito em lex/flex esse arquivo tem como objetivo definir
+  os tokens da linguagem, bem como as ações tomadas quando os mesmos são
+  encontrados em um arquivo fonte. Sendo assim realizando a análise léxica.
 
-    Documentação utilizada para gerar arquivo:
-        - https://ftp.gnu.org/old-gnu/Manuals/flex-2.5.4/html_mono/flex.html
+  Documentação utilizada para gerar arquivo:
+  - https://ftp.gnu.org/old-gnu/Manuals/flex-2.5.4/html_mono/flex.html
 */
 
 /* Opções para o flex */
@@ -15,39 +15,27 @@
 
 /* Código c colocado no escopo global do programa */
 %{
-#include <stdlib.h> // exit, EXIT_FAILURE
-#include <stdbool.h> // tipo bool
-#include <assert.h> // assert macro
+    #include <stdlib.h> // exit, EXIT_FAILURE
+    #include <stdbool.h> // tipo bool
+    #include <assert.h> // assert macro
+    #include <errno.h>
 
-#include "headers/token_definitions.h"
-#include "log_info/logging.h"
-#include "utils/user_input.h"
-#include "utils/utils.h"
+    #include "sintatico.tab.h"
 
-char buffer[256]; /// utilizado para armazenar temporariamente trechos de tokens
+    #include "log_info/logging.h"
+    #include "utils/user_input.h"
+    #include "utils/utils.h"
 
-uint8_t is_open_block = 0; /// conta a quantidade de {}
-uint8_t is_open_expression = 0; /// conta a quantidade de ()
+    extern char buffer[256];
 
-bool have_error = false; /// guarda se houve algum erro durante a execução do processo
+    extern uint8_t is_open_block;
+    extern uint8_t is_open_expression;
+    extern bool have_error;
 
-/**
- * @brief Últimas verificações léxicas após terminado o input de tokens
- *
- * @pre leitura de tokens encerrada
- * @post deixa a variável global have_error em seu estado final
- */
-void lastVerify(const char * filename);
-/**
- * @brief Função chamada ao encerrar o programa,
- * informando o usuário e realizando as limpezas necessárias
- *
- * Deve ser passada para função atexit
- * @pre leitura de tokens encerrada
- * @post deixa a variável global have_error em seu estado final
- */
-void exitFunction(void);
+    #define LOGI(...) cmmLog (LOG_TYPE_INFO, LEXICAL_ANALYSIS, __VA_ARGS__)
+    #define LOGE(...) cmmLog (LOG_TYPE_ERROR, LEXICAL_ANALYSIS, __VA_ARGS__)
 %}
+
 %x comment string_literal char_literal
 
 /* ---------- */
@@ -72,16 +60,24 @@ COMMENT_MULTILINE_BEGIN "/*"
 /* aceita comentários em uma linha */
 COMMENT_SINGLE_LINE ("//".*)
 
-
 /* ----------------- */
 /* Classes de tokens */
 /* ----------------- */
 /* Token que aceita comandos para o preprocessador */
 PREPROCESSOR_COMMAND "#"(.*)
 /* Token que aceita todas as palavras chave reconhecidas pela linguagem */
-KEYWORD "if"|"else"|"const"|"for"|"while"|"struct"
+KEYWORD_IF "if"
+KEYWORD_ELSE "else"
+KEYWORD_FOR "for"
+KEYWORD_WHILE "while"
+KEYWORD_RETURN "return"
+KEYWORD_STRUCT "struct"
+KEYWORD_CONST "const"
 /* Token que aceita todos os tipos de dados da linguagem */
-DATA_TYPE "int"|"float"|"double"|"char"
+DATA_TYPE_INT "u"?"int"(("8"|"16"|"32"|"64")"_t")?
+DATA_TYPE_FLOAT "float"|"double"
+DATA_TYPE_CHAR "char"
+DATA_TYPE_VOID "void"
 /* Token que aceita símbolos de atribuição */
 /* ASSIGNMENT "="|"+="|"-="|"*="|"/="|"%="|"<<="|">>="|"&="|"^="|"|=" */
 ASSIGNMENT ("+"|"-"|"*"|"/"|"%"|"<<"|">>"|"&"|"|"|"^")?"="
@@ -96,9 +92,9 @@ BLOCK_BEGIN "{"
 /* Token que aceita o caractere que é considerado fim de um escopo */
 BLOCK_END "}"
 /* Token que aceita o caractere que é considerado inicio de uma expressão */
-EXPRESSION_BEGIN "("
+PARENTESEIS_BEGIN "("
 /* Token que aceita o caractere que é considerado fim de uma expressão */
-EXPRESSION_END ")"
+PARENTESEIS_END ")"
 
 /* valores constantes para expressões */
 /* Token que aceita valores inteiros literais */
@@ -129,123 +125,193 @@ ID ({LETTER})({ALPHA_NUM}|_)*
 
 {COMMENT_SINGLE_LINE} /* elimina resto da linha do cometário */
 
-{BLANK_ENTER}+ /* Elimina espaços em branco e \n */
+{BLANK_ENTER}+
 
 {PREPROCESSOR_COMMAND} {
-    doLog (
-        LOG_TYPE_INFO,
+    LOGI (
         "Comando para o preprocessador [%s]",
         yytext
     );
+	return TOKEN_PREPROCESSOR_COMMAND;
 }
 
-{KEYWORD} {
-    doLog (
-        LOG_TYPE_INFO,
+{KEYWORD_IF} {
+    LOGI (
         "Palavra reservada [%s]",
         yytext
     );
+	return TOKEN_KEYWORD_IF;
 }
 
-{DATA_TYPE} {
-    doLog (
-        LOG_TYPE_INFO,
-        "Tipo de dado encontrado [%s]",
+{KEYWORD_ELSE} {
+    LOGI (
+        "Palavra reservada [%s]",
         yytext
     );
+	return TOKEN_KEYWORD_ELSE;
+}
+
+{KEYWORD_CONST} {
+    LOGI (
+        "Palavra reservada [%s]",
+        yytext
+    );
+	return TOKEN_KEYWORD_CONST;
+}
+
+{KEYWORD_RETURN} {
+    LOGI (
+        "Palavra reservada [%s]",
+        yytext
+    );
+	return TOKEN_KEYWORD_RETURN;
+}
+
+{KEYWORD_STRUCT} {
+    LOGI (
+        "Palavra reservada [%s]",
+        yytext
+    );
+	return TOKEN_KEYWORD_STRUCT;
+}
+
+{KEYWORD_FOR} {
+    LOGI (
+        "Palavra reservada [%s]",
+        yytext
+    );
+	return TOKEN_KEYWORD_FOR;
+}
+
+{KEYWORD_WHILE} {
+    LOGI (
+        "Palavra reservada [%s]",
+        yytext
+    );
+	return TOKEN_KEYWORD_WHILE;
+}
+
+{DATA_TYPE_INT} {
+    LOGI (
+        "Tipo de dado inteiro encontrado [%s]",
+        yytext
+    );
+	return TOKEN_DATA_TYPE_INT;
+}
+
+{DATA_TYPE_FLOAT} {
+    LOGI (
+        "Tipo de dado ponto flutuante encontrado [%s]",
+        yytext
+    );
+	return TOKEN_DATA_TYPE_FLOAT;
+}
+
+{DATA_TYPE_CHAR} {
+    LOGI (
+        "Tipo de caractere encontrado [%s]",
+        yytext
+    );
+	return TOKEN_DATA_TYPE_CHAR;
+}
+
+{DATA_TYPE_VOID} {
+    LOGI (
+        "Tipo de caractere encontrado [%s]",
+        yytext
+    );
+	return TOKEN_DATA_TYPE_VOID;
 }
 
 {ASSIGNMENT} {
-    doLog (
-        LOG_TYPE_INFO,
+    LOGI (
         "Expressão de atribuição [%s] encontrada",
         yytext
     );
+	return TOKEN_ASSIGNMENT;
 }
 
 {ARITHMETIC_OPERATOR} {
-    doLog (
-        LOG_TYPE_INFO,
+    LOGI (
         "Operador aritmético [%s] encontrado",
         yytext
     );
+	return TOKEN_ARITHMETIC_OPERATOR;
 }
 
 {RELATIONAL_OPERATOR} {
-    doLog (
-        LOG_TYPE_INFO,
+    LOGI (
         "Operador relacional [%s] encontrado",
         yytext
     );
+	return TOKEN_RELATIONAL_OPERATOR;
 }
 
 {END_EXP} {
-    doLog (
-        LOG_TYPE_INFO,
+    LOGI (
         "Caractere de fim de expressão [;] encontrado"
     );
+	return TOKEN_END_EXP;
 }
 
 {BLOCK_BEGIN} {
-    doLog (
-        LOG_TYPE_INFO,
+    LOGI (
         "Caractere de início de escopo [{] encontrado"
     );
     is_open_block++;
+    return TOKEN_BLOCK_BEGIN;
 }
 
 {BLOCK_END} {
     if (is_open_block) {
-        doLog (
-            LOG_TYPE_INFO,
+        LOGI (
             "Caractere de fim de escopo [}] encontrado"
         );
     }else {
-        doLog (
-            LOG_TYPE_ERROR,
+        LOGE (
             "Caractere de fim de expressão [}] encontrado, sem correspondente [{]"
         );
     }
     is_open_block--;
+	return TOKEN_BLOCK_END;
 }
 
-{EXPRESSION_BEGIN} {
-    doLog (
-        LOG_TYPE_INFO,
+{PARENTESEIS_BEGIN} {
+    LOGI (
         "Caractere de início de expressão [(] encontrado"
     );
     is_open_expression++;
+	return TOKEN_PARENTESEIS_BEGIN;
 }
 
-{EXPRESSION_END} {
+{PARENTESEIS_END} {
     if (is_open_expression) {
-        doLog (
-            LOG_TYPE_INFO,
+        LOGI (
             "Caractere de fim de expressão [)] encontrado"
         );
     }else {
-        doLog (
-            LOG_TYPE_ERROR,
+        LOGE (
             "Caractere de fim de expressão [)] encontrado, sem correspondente [(]"
         );
     }
     is_open_expression--;
+	return TOKEN_PARENTESEIS_END;
 }
 
 {INTEGER_LITERAL} {
-    doLog (
-        LOG_TYPE_INFO,
+    LOGI (
         "Valor inteiro [%s] encontrado",
         yytext
     );
+	return TOKEN_INTEGER_LITERAL;
 }
 
 {FLOAT_LITERAL} {
-    doLog (
-        LOG_TYPE_INFO,
+    LOGI (
         "Valor ponto flutuante [%s] encontrado",
         yytext
     );
+	return TOKEN_FLOAT_LITERAL;
 }
 
 {CHAR_LITERAL} {
@@ -253,17 +319,16 @@ ID ({LETTER})({ALPHA_NUM}|_)*
     BEGIN(char_literal);
 }
 <char_literal>\' {
-    doLog (
-        LOG_TYPE_INFO,
+    LOGI (
         "Caractere [%s] encontrado",
         buffer
     );
     BEGIN(INITIAL);
+	return TOKEN_CHAR_LITERAL;
 }
 
 <char_literal>. {
-    doLog (
-        LOG_TYPE_ERROR,
+    LOGE (
         "char literal mal formado [%s]",
         buffer
     );
@@ -273,17 +338,16 @@ ID ({LETTER})({ALPHA_NUM}|_)*
 
 {STRING_LITERAL_BEGIN} BEGIN(string_literal);
 <string_literal>\" {
-    doLog (
-        LOG_TYPE_INFO,
+    LOGI (
         "String literal [%s] encontrado",
         buffer
     );
     BEGIN(INITIAL);
+	return TOKEN_STRING_LITERAL;
 }
 
 <string_literal>{ENTER} {
-    doLog (
-        LOG_TYPE_ERROR,
+    LOGE (
         "String literal mal formada [%s]",
         buffer
     );
@@ -295,17 +359,16 @@ ID ({LETTER})({ALPHA_NUM}|_)*
 }
 
 {ID} {
-    doLog (
-        LOG_TYPE_INFO,
+    LOGI (
         "Identificador [%s] encontrado",
         yytext
     );
+	return TOKEN_ID;
 }
 
  /* Qualquer caractere que não foi definido antes deve lançar um erro */
 . {
-    doLog (
-        LOG_TYPE_ERROR,
+    LOGE (
         "Caractere [%c] não reconhecido pela linguagem,",
         yytext[0]
     );
@@ -316,47 +379,3 @@ ID ({LETTER})({ALPHA_NUM}|_)*
     Aqui temos mais definições C
     para serem colocadas no final do arquivo main.c
 */
-
-void lastVerify(const char * filename) {
-    if (is_open_block) {
-        doLog(LOG_TYPE_ERROR, "Fim de arquivo antes de fechar o escopo {...");
-    }
-    if (is_open_expression > 0) {
-        doLog(LOG_TYPE_ERROR, "Fim de arquivo antes de fechar a expressão (...");
-    }
-    printf (
-        "\n%s ao executar a análise léxica no arquivo [%s]\n",
-        have_error? "Falha" : "Sucesso",
-        filename
-    );
-}
-
-void exitFunction(void) {
-    // não foi usado printf devido a possíveis falhas
-	puts("Encerrando o compilador c--");
-}
-
-/// função main copiada para o main.c
-int main(int argc, char * const argv[]) {
-    // garante que o usuário passou 0 ou 1 argumentos
-    assert(0 < argc && argc < 3);
-    // configura função chamada ao sair do programa
-    atexit(exitFunction);
-
-    char *filename; /// caminho para o arquivo a ser analisado
-    if (argc == 2) {
-        filename = argv[1];
-    }else {
-        filename = getFilenameFromUser();
-    }
-    FILE *file_ptr = fopen(filename, "r");
-	if (file_ptr == NULL) {
-		printf("Falha ao abrir o arquivo de entrada\n");
-		return EXIT_FAILURE;
-	}
-	yyin = file_ptr;
-
-    yylex();
-    lastVerify(filename);
-    return (have_error? EXIT_FAILURE : EXIT_SUCCESS);
-}
