@@ -7,7 +7,7 @@
 \usepackage{breqn}
 \usepackage{listings}
 
-\graphicspath{{./images/}}
+\graphicspath{{./images/} {../images/}}
 
 \definecolor{dkgreen}{rgb}{0,0.6,0}
 \definecolor{gray}{rgb}{0.5,0.5,0.5}
@@ -48,7 +48,7 @@
 
 \author[Grupo: c--]{Victor E. Almeida \and Marco A. G. Pedroso}
 
-\title{Analisador léxico para a linguagem C- -}
+\title{Analisador sintático e léxico para a linguagem C- -}
 \subtitle{Demonstrando o software}
 \date{\today}
 \institute{UNIOESTE}
@@ -67,7 +67,8 @@
     \begin{itemize}
         \item \textbf{Sistema para compilar}: GNU make e gcc,
         \item \textbf{Linguagem de programação}: C11,
-        \item \textbf{Gerador de analisador léxico}: GNU flex.
+        \item \textbf{Gerador de analisador léxico}: GNU flex;
+        \item \textbf{Gerador de analisador sintático}: GNU bison.
     \end{itemize}
 \end{frame}
 
