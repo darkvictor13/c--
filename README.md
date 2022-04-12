@@ -122,7 +122,8 @@ Uma vez definidos os tokens a serem identificados, foram definidas estratégias 
 - Qualquer caractere não reconhecido por nenhuma expressão regular é lido descartado e gerado o erro;
 - Quando lidos os caracteres "(" ou "{" suas respectivas variáveis globais contadoras são incrementadas, e decrementadas quando encontrado ")" ou "}". Sendo assim caso no final do programa qualquer valor seja diferente de 0 houve erros.
 - Quando lidos caracteres iniciais de char ou string literal, utiliza-se a estratégia de start conditions, ver seção 11 da referência "Start conditions", que possibilita tomar determinado caminho de leitura tendo em vista entradas diferentes.
-- TODO Sintatico
+
+Para tratamento de erros sintáticos excluí-se todos os tokens até que se encontre uma palavra chave ou um tipo de dados ou um ";".
 
 ## Funcionamento do software
 Fluxograma da execução do software:
