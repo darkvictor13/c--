@@ -1,7 +1,7 @@
 1 Ok
 2 Ok
-3 Falta gerar árvore
+3 Ok
 4 Ok
-5 README: EBNF da linguegem, TOKENS da linguagem, erros sintáticos, colocar árvore
-6 criar fonte com somente erro lexico, recuperar do erro
+5 README: EBNF da linguegem
+6 Ok
 7 vai ta ok quando entregar

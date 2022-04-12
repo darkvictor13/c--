@@ -1,0 +1,8 @@
+#include uma lib aleatoria
+
+int main () {
+    // comentario
+    1int teste = 3;
+    while (10 < 11{
+}
+}

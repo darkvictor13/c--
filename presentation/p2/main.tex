@@ -16,6 +16,7 @@
 \usepackage{listings}
 
 \graphicspath{{./images/} {../images/}}
+\setbeamertemplate{caption}[numbered]
 
 \definecolor{dkgreen}{rgb}{0,0.6,0}
 \definecolor{gray}{rgb}{0.5,0.5,0.5}
@@ -80,12 +81,8 @@
     \end{itemize}
 \end{frame}
 
-\begin{frame}
-    \frametitle{}
-\end{frame}
 
-\section{lex/Flex}\label{lex/Flex}
-
+\section{Bison}\label{Bison}
 \begin{frame}[t,fragile]{\insertsectionhead}
     \frametitle{Exemplo mínimo do bison}
     \begin{lstlisting}
@@ -106,7 +103,7 @@
 \end{frame}
 
 \begin{frame}[t,fragile]{\insertsectionhead}
-    \frametitle{Funcionamento do lex/flex}
+    \frametitle{Exemplo de regra do bison}
 
     \begin{center}
         
@@ -125,7 +122,16 @@
     
 \end{frame}
 
-\section[Analisador]{Analisador léxico}\label{Analisádor léxico}
+\begin{frame}
+    \frametitle{Integrando Flex e bison}
+    \begin{figure}[!htb]
+        \centering
+        \includegraphics[width=\textwidth]{fluxo}
+        \caption{\label{fig:fluxo}Fluxograma do compilador}
+    \end{figure}
+\end{frame}
+
+\section[Analisador sintático]{Analisador sintático}\label{Analisádor sintático}
 \begin{frame}[allowframebreaks]
     \frametitle{Lista de algumas regras gramaticais}
     \begin{itemize}
@@ -133,7 +139,8 @@
         \item $<$keyword$>::=$ TOKEN\_KEYWORD\_IF $|$ TOKEN\_KEYWORD\_ELSE $|$ TOKEN\_KEYWORD\_CONST $|$\\TOKEN\_KEYWORD\_FOR $|$\\TOKEN\_KEYWORD\_WHILE $|$\\TOKEN\_KEYWORD\_RETURN $|$ TOKEN\_KEYWORD\_STRUCT
         \framebreak
         \item $<$literal$>::=$ TOKEN\_INTEGER\_LITERAL $|$ TOKEN\_FLOAT\_LITERAL $|$ TOKEN\_CHAR\_LITERAL $|$ TOKEN\_STRING\_LITERAL
-        \item conditional: value $|$ value TOKEN\_RELATIONAL\_OPERATOR value
+        \item $<$value $>::=$TOKEN\_ID $|$ TOKEN\_INTEGER\_LITERAL $|$ TOKEN\_FLOAT\_LITERAL
+        \item $<$exp$> ::= $ $<$complete\_variable$>~<$exp$>$ $|$ $<$ifel$>~<$exp$>$ $|$ $<$atribuition$>~<$exp$>$ $|$ $<$for$>~<$exp$>$ $|$ $<$while$>~<$exp$>$ $|~\lambda$
     \end{itemize}
 \end{frame}
 

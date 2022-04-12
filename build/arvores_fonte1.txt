@@ -1,0 +1,48 @@
+programa
+programa
+definition
+    data type
+    variable
+            assignment
+            literal
+programa
+definition
+    data type
+    function
+programa
+definition
+    data type
+    function
+        if
+            data type
+                assignment
+                literal
+        else
+            data type
+                assignment
+                literal
+        data type
+            assignment
+            literal
+programa
+definition
+    data type
+    function
+        data type
+        data type
+            assignment
+            literal
+        data type
+            assignment
+            literal
+        data type
+            assignment
+            literal
+        data type
+            assignment
+            literal
+        if
+            assignment
+            assignment
+        else
+            assignment

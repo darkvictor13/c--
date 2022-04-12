@@ -42,7 +42,80 @@ A descrição das expressões regulares supracitadas encontra-se no arquivo font
 ### Descrição da gramática
 \<programa\> ::= λ
     | TOKEN_PREPROCESSOR_COMMAND \<programa\> 
-    | definicao programa 
+    | \<definicao\> \<programa\> 
+
+\<data_type\> ::= TOKEN_DATA_TYPE_INT
+    | TOKEN_DATA_TYPE_FLOAT
+    | TOKEN_DATA_TYPE_CHAR
+    | TOKEN_KEYWORD_CONST TOKEN_DATA_TYPE_INT
+    | TOKEN_KEYWORD_CONST TOKEN_DATA_TYPE_FLOAT
+    | TOKEN_KEYWORD_CONST TOKEN_DATA_TYPE_CHAR
+    | TOKEN_DATA_TYPE_VOID
+
+\<keyword\> ::= TOKEN_KEYWORD_IF
+	| TOKEN_KEYWORD_ELSE
+	| TOKEN_KEYWORD_CONST
+	| TOKEN_KEYWORD_FOR
+	| TOKEN_KEYWORD_WHILE
+	| TOKEN_KEYWORD_RETURN
+	| TOKEN_KEYWORD_STRUCT
+
+\<segure_token\> ::= \<keyword\>
+    | \<data_type\>
+    | TOKEN_END_EXP
+
+\<literal\> ::= TOKEN_INTEGER_LITERAL
+    | TOKEN_FLOAT_LITERAL
+    | TOKEN_CHAR_LITERAL
+    | TOKEN_STRING_LITERAL
+
+\<definition\> ::= \<data_type\> TOKEN_ID \<definition_variable_function\>
+
+\<definition_variable_function\> ::= \<variable\> | \<function\>
+
+\<complete_variable\> ::= \<data_type\> TOKEN_ID \<variable\>
+
+\<variable\> ::= TOKEN_ASSIGNMENT \<literal\> TOKEN_END_EXP
+    | TOKEN_ARITHMETIC_OPERATOR TOKEN_END_EXP
+    | TOKEN_END_EXP
+
+\<function\> ::=
+    TOKEN_PARENTESEIS_BEGIN TOKEN_PARENTESEIS_END TOKEN_END_EXP
+    | TOKEN_PARENTESEIS_BEGIN TOKEN_PARENTESEIS_END TOKEN_BLOCK_BEGIN \<exp\> TOKEN_BLOCK_END
+    | \<error\> segure_token
+
+\<exp\> ::= λ
+    | \<complete_variable\> \<exp\>
+    | \<atribuition\> \<exp\>
+    | \<ifel\> \<exp\>
+    | \<for\> \<exp\>
+    | \<while\> \<exp\>
+
+\<for\> ::=
+    TOKEN_KEYWORD_FOR TOKEN_PARENTESEIS_BEGIN \<atribuition\> TOKEN_END_EXP \<conditional\> TOKEN_END_EXP \<math_expression\> TOKEN_PARENTESEIS_END TOKEN_BLOCK_BEGIN \<exp\> TOKEN_BLOCK_END
+    | TOKEN_KEYWORD_FOR TOKEN_PARENTESEIS_BEGIN complete_variable TOKEN_END_EXP \<conditional\> TOKEN_END_EXP \<math_expression\> TOKEN_PARENTESEIS_END TOKEN_BLOCK_BEGIN \<exp\> TOKEN_BLOCK_END
+    | \<error\> segure_token
+
+\<while\> ::=
+    TOKEN_KEYWORD_WHILE TOKEN_PARENTESEIS_BEGIN \<conditional\> TOKEN_PARENTESEIS_END TOKEN_BLOCK_BEGIN \<exp\> TOKEN_BLOCK_END
+    | \<error\> segure_token
+
+\<atribuition\> ::= TOKEN_ID TOKEN_ASSIGNMENT \<math_expression\> TOKEN_END_EXP
+
+\<value\> ::= TOKEN_ID
+    | TOKEN_INTEGER_LITERAL
+    | TOKEN_FLOAT_LITERAL
+
+\<math_expression\> ::= λ | \<value\>
+    | TOKEN_PARENTESEIS_BEGIN \<math_expression\> TOKEN_PARENTESEIS_END \<math_expression\>
+    | \<math_expression\> TOKEN_ARITHMETIC_OPERATOR \<math_expression\>
+
+\<ifel\> ::=
+    TOKEN_KEYWORD_IF TOKEN_PARENTESEIS_BEGIN \<conditional\> TOKEN_PARENTESEIS_END TOKEN_BLOCK_BEGIN \<exp\> TOKEN_BLOCK_END
+    | TOKEN_KEYWORD_IF TOKEN_PARENTESEIS_BEGIN \<conditional\> TOKEN_PARENTESEIS_END TOKEN_BLOCK_BEGIN \<exp\> TOKEN_BLOCK_END TOKEN_KEYWORD_ELSE TOKEN_BLOCK_BEGIN \<exp\> TOKEN_BLOCK_END
+    | \<error\> segure_token
+
+\<conditional\> ::= \<value\> | \<value\> TOKEN_RELATIONAL_OPERATOR \<value\>
 
 ### Identificando erros
 Uma vez definidos os tokens a serem identificados, foram definidas estratégias diferentes para reconhecer erros léxicos comuns, tais como:
@@ -54,6 +127,58 @@ Uma vez definidos os tokens a serem identificados, foram definidas estratégias 
 ## Funcionamento do software
 Fluxograma da execução do software:
 ![Fluxograma](presentation/images/fluxo.png)
+
+## Árvore de derivação
+```
+programa
+programa
+definition
+    data type
+    variable
+            assignment
+            literal
+programa
+definition
+    data type
+    function
+programa
+definition
+    data type
+    function
+        if
+            data type
+                assignment
+                literal
+        else
+            data type
+                assignment
+                literal
+        data type
+            assignment
+            literal
+programa
+definition
+    data type
+    function
+        data type
+        data type
+            assignment
+            literal
+        data type
+            assignment
+            literal
+        data type
+            assignment
+            literal
+        data type
+            assignment
+            literal
+        if
+            assignment
+            assignment
+        else
+            assignment
+```
 
 ## Estrutura do projeto
 ```
