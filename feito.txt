@@ -1,7 +1,0 @@
-1 Ok
-2 Ok
-3 Ok
-4 Ok
-5 README: EBNF da linguegem
-6 Ok
-7 vai ta ok quando entregar

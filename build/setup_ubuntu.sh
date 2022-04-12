@@ -1,2 +1,2 @@
 #!/bin/bash
-sudo apt install flex make
+sudo apt install flex bison make

@@ -5,6 +5,11 @@ Um reduzido analisador léxico e sintático de um subconjunto da linguagem proce
     - Victor Emanuel Almeida;
     - Marco Aurélio Guerra Pedroso.
 
+## Softwares utilizados
+- bison 3.8.2 encontrado na pasta build
+- flex 2.6.4 encontrado na pasta build
+- make 4.3 encontrado na pasta build
+
 ## A linguagem c--:
 
 ### Descrição da linguagem
@@ -185,13 +190,15 @@ definition
 ```
 .
 ├── build
+│   ├── arvores_fonte1.txt
+│   ├── fonte1.txt
+│   ├── fonte2.txt
+│   ├── fonte3.txt
 │   ├── main.out
 │   ├── Makefile
 │   ├── setup_arch.sh
 │   └── setup_ubuntu.sh
-├── input_files
-│   ├── teste_falha.c
-│   └── teste_sucesso.c
+├── feito.txt
 ├── presentation
 │   ├── fluxo.drawio
 │   ├── images
@@ -229,6 +236,7 @@ definition
     ├── sintatico.tab.h
     ├── sintatico.y
     ├── tree
+    │   ├── tree.c
     │   └── tree.h
     └── utils
         ├── user_input.c
@@ -273,3 +281,4 @@ Tendo gerado o executável "main.out" dentro da pasta build, basta executá-lo p
 
 ## Referências
 - https://ftp.gnu.org/old-gnu/Manuals/flex-2.5.4/html_mono/flex.html
+- https://www.gnu.org/software/bison/manual/html_node/index.html

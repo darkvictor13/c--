@@ -1,2 +1,2 @@
 #!/bin/bash
-sudo pacman -S flex make
+sudo pacman -S flex bison make
