@@ -8,7 +8,6 @@
 #include <assert.h> // assert macro
 #include <errno.h>
 #include <string.h>
-#include "tree/tree.h"
 
 #include "log_info/logging.h"
 #include "utils/user_input.h"
@@ -16,7 +15,6 @@
 
 #define LOGI(...) cmmLog (LOG_TYPE_INFO, SINTATIC_ANALYSIS, __VA_ARGS__)
 #define LOGE(...) cmmLog (LOG_TYPE_ERROR, SINTATIC_ANALYSIS, __VA_ARGS__)
-#define MAX_SIZE 1000
 
 extern FILE *yyin;
 extern int yylex();
@@ -24,11 +22,6 @@ extern char* yytext;
 extern int yyleng;
 
 char buffer[256]; /// utilizado para armazenar temporariamente trechos de tokens
-
-int num_tabs = 0;
-
-treeNode sintax_tree[MAX_SIZE];
-int sintax_tree_size = 0;
 
 uint8_t is_open_block = 0; /// conta a quantidade de {}
 uint8_t is_open_expression = 0; /// conta a quantidade de ()
@@ -88,35 +81,19 @@ void exitFunction(void);
 
 %%
 
-add_tab: {num_tabs++;};
-
-rm_tab: {num_tabs--;};
-
-programa_token: {ADD("programa");};
-definition_token: {ADD("definition");};
-variable_token: {ADD("variable");};
-function_token: {ADD("function");};
-assignment_token: {ADD("assignment");};
-data_type_token: {ADD("data type");};
-literal_token: {ADD("literal");};
-if_token: {ADD("if");};
-else_token: {ADD("else");};
-for_token: {ADD("for");};
-while_token: {ADD("while");};
-
 programa:
-    | programa_token add_tab TOKEN_PREPROCESSOR_COMMAND rm_tab programa
-    | programa_token add_tab definition rm_tab programa
+    | TOKEN_PREPROCESSOR_COMMAND programa
+    | definition programa
     ;
 
 data_type:
-    data_type_token add_tab TOKEN_DATA_TYPE_INT rm_tab
-    | data_type_token add_tab TOKEN_DATA_TYPE_FLOAT rm_tab
-    | data_type_token add_tab TOKEN_DATA_TYPE_CHAR rm_tab
-    | data_type_token add_tab TOKEN_KEYWORD_CONST TOKEN_DATA_TYPE_INT rm_tab
-    | data_type_token add_tab TOKEN_KEYWORD_CONST TOKEN_DATA_TYPE_FLOAT rm_tab
-    | data_type_token add_tab TOKEN_KEYWORD_CONST TOKEN_DATA_TYPE_CHAR rm_tab
-    | data_type_token add_tab TOKEN_DATA_TYPE_VOID rm_tab
+    TOKEN_DATA_TYPE_INT
+    | TOKEN_DATA_TYPE_FLOAT
+    | TOKEN_DATA_TYPE_CHAR
+    | TOKEN_KEYWORD_CONST TOKEN_DATA_TYPE_INT
+    | TOKEN_KEYWORD_CONST TOKEN_DATA_TYPE_FLOAT
+    | TOKEN_KEYWORD_CONST TOKEN_DATA_TYPE_CHAR
+    | TOKEN_DATA_TYPE_VOID
     ;
 
 keyword:
@@ -136,18 +113,18 @@ segure_token:
     ;
 
 literal:
-    literal_token add_tab TOKEN_INTEGER_LITERAL rm_tab
-    | literal_token add_tab TOKEN_FLOAT_LITERAL rm_tab
-    | literal_token add_tab TOKEN_CHAR_LITERAL rm_tab
-    | literal_token add_tab TOKEN_STRING_LITERAL rm_tab
+    TOKEN_INTEGER_LITERAL
+    | TOKEN_FLOAT_LITERAL
+    | TOKEN_CHAR_LITERAL
+    | TOKEN_STRING_LITERAL
     ;
 
-definition: definition_token add_tab data_type TOKEN_ID definition_variable_function rm_tab
+definition: data_type TOKEN_ID definition_variable_function
     ;
 
 definition_variable_function:
-    variable_token add_tab variable rm_tab
-    | function_token add_tab function rm_tab
+    variable
+    | function
     ;
 
 complete_variable:
@@ -155,7 +132,7 @@ complete_variable:
     ;
 
 variable:
-    add_tab assignment_token TOKEN_ASSIGNMENT literal TOKEN_END_EXP rm_tab
+    TOKEN_ASSIGNMENT literal TOKEN_END_EXP
     | TOKEN_ARITHMETIC_OPERATOR TOKEN_END_EXP
     | TOKEN_END_EXP
     ;
@@ -176,18 +153,18 @@ exp:
     ;
 
 for:
-    for_token add_tab TOKEN_KEYWORD_FOR TOKEN_PARENTESEIS_BEGIN atribuition TOKEN_END_EXP conditional TOKEN_END_EXP math_expression TOKEN_PARENTESEIS_END TOKEN_BLOCK_BEGIN exp TOKEN_BLOCK_END rm_tab
-    | for_token add_tab TOKEN_KEYWORD_FOR TOKEN_PARENTESEIS_BEGIN complete_variable TOKEN_END_EXP conditional TOKEN_END_EXP math_expression TOKEN_PARENTESEIS_END TOKEN_BLOCK_BEGIN exp TOKEN_BLOCK_END rm_tab
+    TOKEN_KEYWORD_FOR TOKEN_PARENTESEIS_BEGIN atribuition TOKEN_END_EXP conditional TOKEN_END_EXP math_expression TOKEN_PARENTESEIS_END TOKEN_BLOCK_BEGIN exp TOKEN_BLOCK_END
+    | TOKEN_KEYWORD_FOR TOKEN_PARENTESEIS_BEGIN complete_variable TOKEN_END_EXP conditional TOKEN_END_EXP math_expression TOKEN_PARENTESEIS_END TOKEN_BLOCK_BEGIN exp TOKEN_BLOCK_END
     | error segure_token
     ;
 
 while:
-    while_token add_tab TOKEN_KEYWORD_WHILE TOKEN_PARENTESEIS_BEGIN conditional TOKEN_PARENTESEIS_END TOKEN_BLOCK_BEGIN exp TOKEN_BLOCK_END rm_tab
+    TOKEN_KEYWORD_WHILE TOKEN_PARENTESEIS_BEGIN conditional TOKEN_PARENTESEIS_END TOKEN_BLOCK_BEGIN exp TOKEN_BLOCK_END
     | error segure_token
     ;
 
 atribuition:
-    assignment_token add_tab TOKEN_ID TOKEN_ASSIGNMENT math_expression TOKEN_END_EXP rm_tab
+    TOKEN_ID TOKEN_ASSIGNMENT math_expression TOKEN_END_EXP
     ;
 
 value:
@@ -203,8 +180,8 @@ math_expression:
     ;
 
 ifel:
-    if_token add_tab TOKEN_KEYWORD_IF TOKEN_PARENTESEIS_BEGIN conditional TOKEN_PARENTESEIS_END TOKEN_BLOCK_BEGIN exp TOKEN_BLOCK_END rm_tab
-    | if_token add_tab TOKEN_KEYWORD_IF TOKEN_PARENTESEIS_BEGIN conditional TOKEN_PARENTESEIS_END TOKEN_BLOCK_BEGIN exp TOKEN_BLOCK_END rm_tab else_token add_tab TOKEN_KEYWORD_ELSE TOKEN_BLOCK_BEGIN exp TOKEN_BLOCK_END rm_tab
+    TOKEN_KEYWORD_IF TOKEN_PARENTESEIS_BEGIN conditional TOKEN_PARENTESEIS_END TOKEN_BLOCK_BEGIN exp TOKEN_BLOCK_END
+    | TOKEN_KEYWORD_IF TOKEN_PARENTESEIS_BEGIN conditional TOKEN_PARENTESEIS_END TOKEN_BLOCK_BEGIN exp TOKEN_BLOCK_END TOKEN_KEYWORD_ELSE TOKEN_BLOCK_BEGIN exp TOKEN_BLOCK_END
     | error segure_token
     ;
 
@@ -259,19 +236,5 @@ int main(int argc, char * const argv[]) {
 
     yyparse();
     lastVerify(filename);
-    if (!have_error) {
-        const char prefix[] = "arvores_";
-        const int size = strlen(prefix) + strlen(filename);
-        char out_file_name[size + 1];
-        strcpy(out_file_name, prefix);
-        strcat(out_file_name, filename);
-        FILE *file = fopen(out_file_name, "w");
-        if (!fopen) {
-            printf("Falha ao abrir arquivo %s\n", out_file_name);
-            exit(EXIT_FAILURE);
-        }
-        print(file, sintax_tree, sintax_tree_size);
-        return EXIT_SUCCESS;
-    }
-    return EXIT_FAILURE;
+    return have_error? EXIT_FAILURE : EXIT_SUCCESS;
 }

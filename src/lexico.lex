@@ -25,19 +25,13 @@
     #include "log_info/logging.h"
     #include "utils/user_input.h"
     #include "utils/utils.h"
-    #include "tree/tree.h"
 
     extern char buffer[256];
 
     extern uint8_t is_open_block;
     extern uint8_t is_open_expression;
     extern bool have_error;
-    extern treeNode sintax_tree[1000];
-    extern int sintax_tree_size;
-    extern int num_tabs;
 
-    //#define LOGI(...) add(sintax_tree + sintax_tree_size, yytext, num_tabs); sintax_tree_size++; cmmLog (LOG_TYPE_INFO, LEXICAL_ANALYSIS, __VA_ARGS__)
-    //#define LOGE(...) add(sintax_tree + sintax_tree_size, yytext, num_tabs); sintax_tree_size++; cmmLog (LOG_TYPE_ERROR, LEXICAL_ANALYSIS, __VA_ARGS__)
     #define LOGI(...) cmmLog (LOG_TYPE_INFO, LEXICAL_ANALYSIS, __VA_ARGS__)
     #define LOGE(...) cmmLog (LOG_TYPE_ERROR, LEXICAL_ANALYSIS, __VA_ARGS__)
 %}
@@ -85,7 +79,6 @@ DATA_TYPE_FLOAT "float"|"double"
 DATA_TYPE_CHAR "char"
 DATA_TYPE_VOID "void"
 /* Token que aceita símbolos de atribuição */
-/* ASSIGNMENT "="|"+="|"-="|"*="|"/="|"%="|"<<="|">>="|"&="|"^="|"|=" */
 ASSIGNMENT ("+"|"-"|"*"|"/"|"%"|"<<"|">>"|"&"|"|"|"^")?"="
 /* Token que aceita os operadores aritméticos */
 ARITHMETIC_OPERATOR "+""+"?|"-""-"?|"/"|"*"|"sizeof"|"["{INTEGER_LITERAL}"]"

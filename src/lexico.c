@@ -602,22 +602,16 @@ char *yytext;
     #include "log_info/logging.h"
     #include "utils/user_input.h"
     #include "utils/utils.h"
-    #include "tree/tree.h"
 
     extern char buffer[256];
 
     extern uint8_t is_open_block;
     extern uint8_t is_open_expression;
     extern bool have_error;
-    extern treeNode sintax_tree[1000];
-    extern int sintax_tree_size;
-    extern int num_tabs;
 
-    //#define LOGI(...) add(sintax_tree + sintax_tree_size, yytext, num_tabs); sintax_tree_size++; cmmLog (LOG_TYPE_INFO, LEXICAL_ANALYSIS, __VA_ARGS__)
-    //#define LOGE(...) add(sintax_tree + sintax_tree_size, yytext, num_tabs); sintax_tree_size++; cmmLog (LOG_TYPE_ERROR, LEXICAL_ANALYSIS, __VA_ARGS__)
     #define LOGI(...) cmmLog (LOG_TYPE_INFO, LEXICAL_ANALYSIS, __VA_ARGS__)
     #define LOGE(...) cmmLog (LOG_TYPE_ERROR, LEXICAL_ANALYSIS, __VA_ARGS__)
-#line 620 "../src/lexico.c"
+#line 614 "../src/lexico.c"
 
 /* ---------- */
 /* Definições */
@@ -637,7 +631,6 @@ char *yytext;
 /* Token que aceita todas as palavras chave reconhecidas pela linguagem */
 /* Token que aceita todos os tipos de dados da linguagem */
 /* Token que aceita símbolos de atribuição */
-/* ASSIGNMENT "="|"+="|"-="|"*="|"/="|"%="|"<<="|">>="|"&="|"^="|"|=" */
 /* Token que aceita os operadores aritméticos */
 /* Token que aceita os operadores relacionais */
 /* Token que aceita o caractere de fim de expressão */
@@ -651,7 +644,7 @@ char *yytext;
 /* Token que aceita strings literais, utilizado em Start conditions*/
 /* Token que aceita valores de caracteres literais, utilizado em Start conditions*/
 /* Token que aceita identificadores da linguagem (nomes de funções, variáveis) */
-#line 654 "../src/lexico.c"
+#line 647 "../src/lexico.c"
 
 #define INITIAL 0
 #define comment 1
@@ -871,9 +864,9 @@ YY_DECL
 		}
 
 	{
-#line 118 "../src/lexico.lex"
+#line 111 "../src/lexico.lex"
 
-#line 120 "../src/lexico.lex"
+#line 113 "../src/lexico.lex"
  /*
     Nessa parte define-se as ações a serem tomadas
     quando encontrar uma das classes de tokens previamente
@@ -881,7 +874,7 @@ YY_DECL
  */
 
  /* Elimina comentários de múltiplas linhas */
-#line 884 "../src/lexico.c"
+#line 877 "../src/lexico.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -950,45 +943,45 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 127 "../src/lexico.lex"
+#line 120 "../src/lexico.lex"
 BEGIN(comment);
 	YY_BREAK
 case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
-#line 128 "../src/lexico.lex"
+#line 121 "../src/lexico.lex"
 
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 129 "../src/lexico.lex"
+#line 122 "../src/lexico.lex"
 
 	YY_BREAK
 case 4:
 /* rule 4 can match eol */
 YY_RULE_SETUP
-#line 130 "../src/lexico.lex"
+#line 123 "../src/lexico.lex"
 
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 131 "../src/lexico.lex"
+#line 124 "../src/lexico.lex"
 BEGIN(INITIAL);
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 133 "../src/lexico.lex"
+#line 126 "../src/lexico.lex"
 /* elimina resto da linha do cometário */
 	YY_BREAK
 case 7:
 /* rule 7 can match eol */
 YY_RULE_SETUP
-#line 135 "../src/lexico.lex"
+#line 128 "../src/lexico.lex"
 
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 137 "../src/lexico.lex"
+#line 130 "../src/lexico.lex"
 {
     LOGI (
         "Comando para o preprocessador [%s]",
@@ -999,7 +992,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 145 "../src/lexico.lex"
+#line 138 "../src/lexico.lex"
 {
     LOGI (
         "Palavra reservada [%s]",
@@ -1010,7 +1003,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 153 "../src/lexico.lex"
+#line 146 "../src/lexico.lex"
 {
     LOGI (
         "Palavra reservada [%s]",
@@ -1021,7 +1014,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 161 "../src/lexico.lex"
+#line 154 "../src/lexico.lex"
 {
     LOGI (
         "Palavra reservada [%s]",
@@ -1032,7 +1025,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 169 "../src/lexico.lex"
+#line 162 "../src/lexico.lex"
 {
     LOGI (
         "Palavra reservada [%s]",
@@ -1043,7 +1036,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 177 "../src/lexico.lex"
+#line 170 "../src/lexico.lex"
 {
     LOGI (
         "Palavra reservada [%s]",
@@ -1054,7 +1047,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 185 "../src/lexico.lex"
+#line 178 "../src/lexico.lex"
 {
     LOGI (
         "Palavra reservada [%s]",
@@ -1065,7 +1058,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 193 "../src/lexico.lex"
+#line 186 "../src/lexico.lex"
 {
     LOGI (
         "Palavra reservada [%s]",
@@ -1076,7 +1069,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 201 "../src/lexico.lex"
+#line 194 "../src/lexico.lex"
 {
     LOGI (
         "Tipo de dado inteiro encontrado [%s]",
@@ -1087,7 +1080,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 209 "../src/lexico.lex"
+#line 202 "../src/lexico.lex"
 {
     LOGI (
         "Tipo de dado ponto flutuante encontrado [%s]",
@@ -1098,7 +1091,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 217 "../src/lexico.lex"
+#line 210 "../src/lexico.lex"
 {
     LOGI (
         "Tipo de caractere encontrado [%s]",
@@ -1109,7 +1102,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 225 "../src/lexico.lex"
+#line 218 "../src/lexico.lex"
 {
     LOGI (
         "Tipo de caractere encontrado [%s]",
@@ -1120,7 +1113,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 233 "../src/lexico.lex"
+#line 226 "../src/lexico.lex"
 {
     LOGI (
         "Expressão de atribuição [%s] encontrada",
@@ -1131,7 +1124,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 241 "../src/lexico.lex"
+#line 234 "../src/lexico.lex"
 {
     LOGI (
         "Operador aritmético [%s] encontrado",
@@ -1142,7 +1135,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 249 "../src/lexico.lex"
+#line 242 "../src/lexico.lex"
 {
     LOGI (
         "Operador relacional [%s] encontrado",
@@ -1153,7 +1146,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 257 "../src/lexico.lex"
+#line 250 "../src/lexico.lex"
 {
     LOGI (
         "Caractere de fim de expressão [;] encontrado"
@@ -1163,7 +1156,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 264 "../src/lexico.lex"
+#line 257 "../src/lexico.lex"
 {
     LOGI (
         "Caractere de início de escopo [{] encontrado"
@@ -1174,7 +1167,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 272 "../src/lexico.lex"
+#line 265 "../src/lexico.lex"
 {
     if (is_open_block) {
         LOGI (
@@ -1191,7 +1184,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 286 "../src/lexico.lex"
+#line 279 "../src/lexico.lex"
 {
     LOGI (
         "Caractere de início de expressão [(] encontrado"
@@ -1202,7 +1195,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 294 "../src/lexico.lex"
+#line 287 "../src/lexico.lex"
 {
     if (is_open_expression) {
         LOGI (
@@ -1219,7 +1212,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 308 "../src/lexico.lex"
+#line 301 "../src/lexico.lex"
 {
     LOGI (
         "Valor inteiro [%s] encontrado",
@@ -1230,7 +1223,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 316 "../src/lexico.lex"
+#line 309 "../src/lexico.lex"
 {
     LOGI (
         "Valor ponto flutuante [%s] encontrado",
@@ -1241,7 +1234,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 324 "../src/lexico.lex"
+#line 317 "../src/lexico.lex"
 {
     _strncpy(buffer, yytext + 1, yyleng - 1);
     BEGIN(char_literal);
@@ -1249,7 +1242,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 328 "../src/lexico.lex"
+#line 321 "../src/lexico.lex"
 {
     LOGI (
         "Caractere [%s] encontrado",
@@ -1261,7 +1254,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 337 "../src/lexico.lex"
+#line 330 "../src/lexico.lex"
 {
     LOGE (
         "char literal mal formado [%s]",
@@ -1273,12 +1266,12 @@ YY_RULE_SETUP
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 346 "../src/lexico.lex"
+#line 339 "../src/lexico.lex"
 BEGIN(string_literal);
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 347 "../src/lexico.lex"
+#line 340 "../src/lexico.lex"
 {
     LOGI (
         "String literal [%s] encontrado",
@@ -1291,7 +1284,7 @@ YY_RULE_SETUP
 case 35:
 /* rule 35 can match eol */
 YY_RULE_SETUP
-#line 356 "../src/lexico.lex"
+#line 349 "../src/lexico.lex"
 {
     LOGE (
         "String literal mal formada [%s]",
@@ -1302,14 +1295,14 @@ YY_RULE_SETUP
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 364 "../src/lexico.lex"
+#line 357 "../src/lexico.lex"
 {
     _strncpy(buffer, yytext, yyleng);
 }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 368 "../src/lexico.lex"
+#line 361 "../src/lexico.lex"
 {
     LOGI (
         "Identificador [%s] encontrado",
@@ -1321,7 +1314,7 @@ YY_RULE_SETUP
 /* Qualquer caractere que não foi definido antes deve lançar um erro */
 case 38:
 YY_RULE_SETUP
-#line 377 "../src/lexico.lex"
+#line 370 "../src/lexico.lex"
 {
     LOGE (
         "Caractere [%c] não reconhecido pela linguagem,",
@@ -1331,10 +1324,10 @@ YY_RULE_SETUP
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 384 "../src/lexico.lex"
+#line 377 "../src/lexico.lex"
 ECHO;
 	YY_BREAK
-#line 1337 "../src/lexico.c"
+#line 1330 "../src/lexico.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(comment):
 case YY_STATE_EOF(string_literal):
@@ -2354,7 +2347,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 384 "../src/lexico.lex"
+#line 377 "../src/lexico.lex"
 
 /*
     Aqui temos mais definições C
